@@ -1,0 +1,36 @@
+.container {
+    margin-top: 5%;
+}
+
+.box {
+
+    height: 500px;
+}
+
+.form-group {
+    border: 1px solid black;
+    border-radius: 10px;
+    height: auto;
+    width: 450px;
+}
+
+h1 {
+    padding-top: 20%;
+}
+
+h5 {
+    opacity: .8;
+}
+
+.form-label {
+    font-size: 1.5rem;
+
+}
+
+.form-control {
+    height: 7vh;
+}
+
+.btn {
+    border-radius: 10px;
+}

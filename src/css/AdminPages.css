@@ -1,0 +1,29 @@
+th {
+    text-align: center;
+}
+
+.btn {
+    border-radius: 10px;
+}
+
+.lg-btn {
+    width: 200px;
+
+}
+
+th {
+    white-space: nowrap;
+
+}
+
+.note {
+    width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.clear-fix {
+    content: "";
+    visibility: hidden;
+    clear: both;
+}
