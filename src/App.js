@@ -1,5 +1,7 @@
+import "./css/OneForAll.css";
+import HOME from "./components/Home.js";
 
-import HOME from "./components/Home";
+
 
 function App() {
   return (

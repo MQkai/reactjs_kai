@@ -1,0 +1,101 @@
+/* command property-一緒使う値 */
+*{
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+.btn,.form-group{
+    border-radius: 10px !important;
+}
+.btn {
+    width: 150px !important;
+}
+.box-Width-500{
+    width: 500px !important;
+}
+.text-wrap{
+    white-space: normal !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.table {
+    text-align: center !important;
+    margin: 0px auto;
+}
+/* これはホームページのCSS */
+/* Home.js */
+/* クラス名　始めるのは "Home" */
+.Home-main{
+    margin-top: 5%;
+}
+.Home-title {
+    font-size: 2.2rem;
+}
+.Home-box2{
+    width: 500px;
+    height: auto;
+}
+.Home-h1{
+    font-weight: 600;
+    margin-top: 150px;
+}
+.Home-content{
+    width: 200px ;
+}
+.Home-btn {
+    width: 150px !important;
+}
+/* ===================================================== End Home Pages ====================================================================== */
+
+/* これから　登録画面系 */
+/* Register.js file */
+/* クラス名　始めるのは "R" */
+.R-main {
+    width: 500px !important;
+    border-radius: 10px;
+}
+.R-p {
+    padding-left: 37px !important;
+}
+.R-select{
+    width: 380px !important;
+}
+.R-p-footer{
+    opacity: .9;
+    text-align: center;
+}
+/* ===================================================== End Register Pages ====================================================================== */
+
+/* これから　一般ユーザのデータ表示画面系 と一覧ユーザのデータ画面系 */
+/* MyPages.js and AdminPages file */
+/* クラス名　始めるのは "Mp" と "Ap"*/
+.Mp-btn-top,.Ap-btn-top{
+    float: right;
+}
+.Mp-btn-top::after,.Ap-btn-top::after{
+    content: "";
+    visibility: hidden;
+    clear: both !important; 
+}
+.Mp-note,.Ap-note{
+    width: 200px !important;
+}
+.Mp-btn,.Ap-btn{
+    width: 100px !important;
+}
+/* ===================================================== End MyPages and AdminPages  ====================================================================== */
+
+/* これから　管理者の権限でユーザのデータ更新画面系 と　ユーザの更新画面系 */
+/* AdminUpdate.js file and UserUpdate.js */
+/* クラス名　始めるのは "Au" */
+.Au-main{
+    border-radius: 10px;
+}
+.Au-select{
+    width: 380px !important;
+}
+.Au-p-footer{
+    visibility: hidden; 
+}
+
+

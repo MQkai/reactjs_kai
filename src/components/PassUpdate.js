@@ -1,24 +1,24 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import "../css/PassUpdate.css"
+
 
 const PassUpdate = () =>  {
   return (
-    <div class="container ">
+    <div className="container ">
 
-        <div class="box  ">
-            <div class="form-group mx-auto shadow ">
-                <legend class="text-center mt-4 font-weight-bold text-primary h3 ">パスワード変換</legend>
-                <div class="mb-3 mx-5 mt-4">
-                    <label class="form-label  " for="">新しパスワード:</label>
-                    <input type="password" id="OldPassWord" class="form-control" placeholder="新しパスワード"/>
+        <div className="box-Width-500 mx-auto my-5 ">
+            <div className="form-group mx-auto shadow  ">
+                <legend className="text-center my-4 font-weight-bold text-primary h3  ">新しいパスワード入力してください。</legend>
+                <div className="mb-3 mx-5 mt-4">
+                    <label className="form-label  " for="">新しいパスワード:</label>
+                    <input type="password" id="OldPassWord" className="form-control" placeholder="新しいパスワード"/>
                 </div>
-                <div class="mb-3 mx-5">
-                    <label class="form-label  " for="">もう一度:</label>
-                    <input type="password" id="NewPassWord" class="form-control " placeholder="もう一度"/>
+                <div className="mb-3 mx-5">
+                    <label className="form-label  " for="">もう一度 パスワード 入力してください。:</label>
+                    <input type="password" id="NewPassWord" className="form-control " placeholder="新しパスワード"/>
                 </div>
-                <div class="row d-flex justify-content-center mt-5">
-                    <button type="button submit" class="btn btn-success col-4 mb-5 ">保存</button>
+                <div className="row d-flex justify-content-center mt-5">
+                    <button type="button submit" className="btn btn-success col-4 mb-5 ">保存</button>
                 </div>
                 
             </div>
