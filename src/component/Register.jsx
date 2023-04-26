@@ -6,30 +6,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
-function Login() {
+function Register() {
   const { register, handleSubmit, formState: { errors} } = useForm({mode: 'onChange'})
   const [messenger, setMessenger] = useState("");
   const navigate  = useNavigate();
 
     const onSubmit = e => {
-      setMessenger("");
-        axios.post('http://localhost:8080/login',e, {
-      headers: {
-        'Content-Type': 'application/json'
-      }})
-      .then(response => {
-        if (response.data.status === "SUCCESS") {
-          sessionStorage.setItem("loginUsername", JSON.stringify(response.data));
-          navigate("/mypage");
-          window.location.reload();   
-        }else{
-          setMessenger("ユーザー名またはパスワードが間違います。");
-        }
-      })
-    .catch(error => {
-      setMessenger("ユーザー名またはパスワードが間違います。")
-    });
-};
+        console.log(e)
+    };
     return (
         <Container>
           <Row className="vh-100 d-flex justify-content-center align-items-center">
@@ -66,6 +50,56 @@ function Login() {
                           <Form.Label>パスワード</Form.Label>
                           <Form.Control type="password" {...register("password")} placeholder="パスワードを入力してください。" />
                         </Form.Group>
+                        {/* name input */}
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                          <Form.Label className="text-center">
+                            名前
+                          </Form.Label>
+                          <Form.Control type="text" placeholder="名前を入力してください。" 
+                          {...register("name",{
+                            required: "名前を入力してください。",
+                            pattern: {
+                                value: /^[a-zA-Z0-9]+$/,
+                                // mada
+                                message: "アルファベットと日本語のみです。"
+                            }
+                        })} 
+                          />
+                        </Form.Group>
+                        {/*  生年月日*/}
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                          <Form.Label className="text-center">
+                          生年月日
+                          </Form.Label>
+                          <Form.Control type="date" placeholder="生年月日を入力してください。" 
+                          {...register("brithday",{
+                            required: "生年月日を入力してください。"
+                        })} 
+                          />
+                        </Form.Group>
+                        {/* ビザ番号 */}
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                          <Form.Label className="text-center">
+                          ビザ番号
+                          </Form.Label>
+                          <Form.Control type="text" placeholder="ビザ番号を入力してください。" 
+                          {...register("visa_ID",{
+                            required: "ビザ番号を入力してください。"
+                        })} 
+                          />
+                        </Form.Group>
+                        {/* ビザ期限 */}
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                          <Form.Label className="text-center">
+                            ビザ期限
+                          </Form.Label>
+                          <Form.Control type="date" placeholder="ビザ期限を入力してください。" 
+                          {...register("visa_date",{
+                            required: "ビザ期限を入力してください。"
+                        })} 
+                          />
+                        </Form.Group>
+                        {/*  */}
                         {messenger && <div className='alert alert-danger'> {messenger}</div>}
 
                         <div className="d-grid">
@@ -92,4 +126,4 @@ function Login() {
   )
 }
 
-export default Login
+export default Register

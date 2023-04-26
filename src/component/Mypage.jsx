@@ -1,8 +1,11 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 
 function Mypage() {
-    const username = sessionStorage.getItem("loginUsername")
+  const loginInfo = JSON.parse(sessionStorage.getItem("loginUsername"));
+  console.log(loginInfo)
+  const username = "admin"
     const [userData,setUserData]=useState("");
     useEffect(() => {
       axios.get('http://localhost:8080/mypage/'+username, {
@@ -70,6 +73,9 @@ function Mypage() {
       </tr>
       </tbody>
     </table>
+    <Link to="/logout">logout</Link><br></br>
+    <Link to="/admin">admin</Link><br></br>
+    <Link to="/login">login</Link>
     </>
     )
   }
