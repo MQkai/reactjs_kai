@@ -6,6 +6,7 @@ import axios from "axios";
 
 
 const HOME = () => {
+ 
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
   const navigate = useNavigate();
@@ -16,16 +17,19 @@ const HOME = () => {
         'Content-Type': 'application/json'
       }
     })
+    
       .then(res => {
         console.log(res.data)
-        if (res.data.length > 0) {
-          navigate("/Mypages")
+        if (res.data.status === "SUCCESS") {
+          sessionStorage.setItem("username",res.data.username)
+          sessionStorage.getItem("username");
+          navigate('/MyPages');
         }
         else {
-          console.log()
           alert("fail")
         }
-      }).catch(err => {
+      })
+      .catch(error => {
         alert("con me no co loi roi!!!!")
 
       })
@@ -34,8 +38,6 @@ const HOME = () => {
   //Register　遷移
   const goToRegister = useNavigate();
   return (
-
-
     <div className=" Home-main container-flued ">
       <div className=" row">
         <div className=" col-6 Home-box1">
@@ -48,15 +50,24 @@ const HOME = () => {
             <legend className=" Home-title text-center mt-4  text-primary h3 ">ログイン</legend>
             <div className=" mb-3 mx-5">
               <label className=" form-label  " for="">ユーザ ID:</label>
-              <input onChange={(e) => setUsername(e.target.value)} type="text" id="UserId" className=" form-control form-control" placeholder="ユーザ　ID" />
+              <input 
+              onChange={(e) => setUsername(e.target.value)} 
+              type="text" 
+              value={username} 
+              className=" form-control form-control" 
+              placeholder="ユーザ　ID" />
             </div>
             <div className=" mb-3 mx-5">
               <label className=" form-label  " for="">パスワード:</label>
-              <input onChange={(e) => setPassword(e.target.value)} type="password" id="PassWord" className="  form-control " placeholder="パスワード" />
+              <input 
+              onChange={(e) => setPassword(e.target.value)} 
+              type="password" id="PassWord" 
+              className="  form-control " 
+              placeholder="パスワード" />
             </div>
             <div className=" row d-flex justify-content-center">
               <button
-                onClick={() => login()}
+                onClick={login}
                 className="btn btn btn-primary col-4 ">
                 ログイン
               </button>
