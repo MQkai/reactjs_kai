@@ -6,9 +6,10 @@ import axios from "axios";
 
 
 const HOME = () => {
- 
+
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
+  const [loginFailed, setLoginFailed] = useState(false)
   const navigate = useNavigate();
   const login = () => {
     const item = { username, password };
@@ -17,16 +18,16 @@ const HOME = () => {
         'Content-Type': 'application/json'
       }
     })
-    
+
       .then(res => {
         console.log(res.data)
         if (res.data.status === "SUCCESS") {
-          sessionStorage.setItem("username",res.data.username)
+          sessionStorage.setItem("username", res.data.username)
           sessionStorage.getItem("username");
           navigate('/MyPages');
         }
         else {
-          alert("fail")
+          setLoginFailed(true);
         }
       })
       .catch(error => {
@@ -35,10 +36,20 @@ const HOME = () => {
       })
 
   }
+  const handlePageClick = () =>{
+    setLoginFailed(false)
+  }
   //Register　遷移
   const goToRegister = useNavigate();
   return (
-    <div className=" Home-main container-flued ">
+    <div 
+    onClick={handlePageClick}
+    className=" Home-main container-flued ">
+      {loginFailed && (
+        <h3 className="Home-alert alert alert-danger text-center ">
+        エラー発生しました！もう一度入力してください。
+      </h3>
+      )}
       <div className=" row">
         <div className=" col-6 Home-box1">
           <h1 className=" Home-h1 text-center  text-primary font-weight-bold ">ようこそへ</h1>
@@ -50,20 +61,20 @@ const HOME = () => {
             <legend className=" Home-title text-center mt-4  text-primary h3 ">ログイン</legend>
             <div className=" mb-3 mx-5">
               <label className=" form-label  " for="">ユーザ ID:</label>
-              <input 
-              onChange={(e) => setUsername(e.target.value)} 
-              type="text" 
-              value={username} 
-              className=" form-control form-control" 
-              placeholder="ユーザ　ID" />
+              <input
+                onChange={(e) => setUsername(e.target.value)}
+                type="text"
+                value={username}
+                className=" form-control form-control"
+                placeholder="ユーザ　ID" />
             </div>
             <div className=" mb-3 mx-5">
               <label className=" form-label  " for="">パスワード:</label>
-              <input 
-              onChange={(e) => setPassword(e.target.value)} 
-              type="password" id="PassWord" 
-              className="  form-control " 
-              placeholder="パスワード" />
+              <input
+                onChange={(e) => setPassword(e.target.value)}
+                type="password" id="PassWord"
+                className="  form-control "
+                placeholder="パスワード" />
             </div>
             <div className=" row d-flex justify-content-center">
               <button

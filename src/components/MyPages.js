@@ -6,7 +6,9 @@ import axios from 'axios';
 
 
 const MyPages = () => {
-  
+
+  //日付計算
+
   //遷移
   const goToHome = useNavigate()
   const goToUserUpdate = useNavigate()
@@ -19,83 +21,131 @@ const MyPages = () => {
   const [userData, setUserData] = useState("");
   const navigate = useNavigate()
   sessionStorage.getItem("username");
-  useEffect( () => {
+  useEffect(() => {
     axios.get("http://localhost:8080/mypage/" + username)
-    .then(res => {
-      if(res.data!==undefined){
-        setUserData(res.data[0])
-      }
-    })
-      .catch(error=>{
-          alert("err")
+      .then(res => {
+        if (res.data !== undefined) {
+          setUserData(res.data[0])
+        }
+      })
+      .catch(error => {
+        alert("err")
       })
   }, [1])
-  if (userData === undefined ) {
+
+  //年齢計算
+  const calculateAge = (birthday) => {
+    const birthDate = new Date(birthday);
+    const currentDate = new Date();
+    const age = currentDate.getFullYear() - birthDate.getFullYear();
+    return age;
+  }
+
+  //残り日
+ 
+  const currentDate = new Date();
+  const visa_date = new Date(userData.visa_date);
+  const timeDifference = visa_date.getTime() - currentDate.getTime();
+  const day = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+  const year = Math.floor(day / 365);
+  const month = Math.floor((day % 365) / 30);
+  const RDay = day - (year * 365) - (month * 30);
+  let result = '';
+
+  if (day > 365) {
+    result = `${year} 年 ${month}月 ${RDay}日`;
+  } else if (day > 30.45) {
+    result = `${month}月 ${RDay}日`;
+  } else {
+    result = `${RDay}日`;
+  }
+    
+
+ 
+
+
+  if (userData === undefined) {
     navigate("/");
     return null
   } else {
     return (
       <div>
-        <h1 className="text-center mt-5 text-primary font-weight-bold "> {userData.name}</h1>
-        <button
-          onClick={() => goToConfirmAcc("/ConfirmAcc")}
-          type="button submit"
-          className=" Mp-btn-top btn btn-info my-3 me-5">
-          パスワード変更
-        </button>
-        <div className="clear-fix"></div>
-        <div className="table-reponsive">
-          <table className="text-wrap table table-striped table-hover align-middle mt-3">
-            <thead>
-              <tr className="align-middle">
-                <th scope="col">#</th>
-                <th scope="col">氏名</th>
-                <th scope="col">性別</th>
-                <th scope="col">生年月日</th>
-                <th scope="col">年齢</th>
-                <th scope="col">在留カード番号</th>
-                <th scope="col">ビザ期限</th>
-                <th scope="col">残り日</th>
-                <th scope="col">ビザ資格</th>
-                <th scope="col">国籍</th>
-                <th scope="col">住所</th>
-                <th scope="col">ノート</th>
-                <th scope="col">修理</th>
+      <h1 className="text-center mt-5 text-primary font-weight-bold "> {userData.name}</h1>
+     
+      <div className="clear-fix "></div>
+      <div className="table-reponsive col-4 mx-auto">
+        <table className="text-wrap table table-striped table-hover align-middle mt-3 border">
+          <thead>
+            <tr>
+              <th>氏名:</th>
+              <td>{userData.name}</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>性別:</th>
+              <td>{userData.sex}</td>
+            </tr>
+            <tr>
+              <th>生年月日:</th>
+              <td>{userData.birthday}</td>
               </tr>
-            </thead>
+              <tr>
+              <th>年齢:</th>
+              <td>{calculateAge(userData.birthday)}</td>
 
-            <tbody>
-              <tr className="align-middle">
-                <th scope="row" >1</th>
-                <td>{userData.name}</td>
-                <td>{userData.sex}</td>
-                <td>{userData.birthday}</td>
-                <td>10歳</td>
-                <td>{userData.visa_id}</td>
-                <td>{userData.visa_date}</td>
-                <td>10日</td>
-                <td>{userData.visa_type}</td>
-                <td>{userData.country}</td>
-                <td>{userData.address}</td>
-                <td className="text-wrap Mp-note"> {userData.note}  </td>
-                <td className=" d-flex justify-content-around">
-                  <button
-                    onClick={() => goToUserUpdate("/UserUpdate")}
-                    className="Mp-btn btn btn-success">
-                    編集
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <button
-            onClick={() => goToHome("/")}
-            className="btn lg-btn btn-success d-block mx-auto my-4">
-            ログアウト
-          </button>
-          {/* <button type="button submit " className={style.hello}>ログアウト</button> */}
+            </tr>
+            <tr>
+              <th>在留カード番号:</th>
+              <td>{userData.visa_id}</td>
+            </tr>
+            <tr>
+              <th>ビザ期限:</th>
+              <td>{userData.visa_date}</td>
+            </tr>
+            <tr>
+              <th>残り日:</th>
+              <td>{result}</td>
+            </tr>
+            <tr>
+              <th>ビザ資格:</th>
+              <td>{userData.visa_id}</td>
+            </tr>
+            <tr>
+              <th>国籍:</th>
+              <td>{userData.country}</td>
+            </tr>
+            <tr>
+              <th>住所:</th>
+              <td>{userData.address}</td>
+            </tr>
+            
+          </tbody>
+        </table>
+        <div className="d-flex justify-content-around">
+
+        <button
+                  onClick={() => goToUserUpdate("/UserUpdate")}
+                  className="btn btn-success text-bg-warning m-1">
+                  編集
+                </button>
+        <button
+          onClick={() => goToHome("/")}
+          className="btn btn-success m-1">
+          ログアウト
+        </button>
+
+        <button
+        onClick={() => goToConfirmAcc("/ConfirmAcc")}
+        type="button submit"
+        className=" btn btn-success m-1 bg-info">
+        パスワード変更
+      </button>
         </div>
+       
+        {/* <button type="button submit " className={style.hello}>ログアウト</button> */}
       </div>
+    </div>
 
     );
   }

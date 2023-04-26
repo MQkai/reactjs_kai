@@ -28,6 +28,9 @@
 .Home-main{
     margin-top: 5%;
 }
+.Home-alert{
+   margin-top: -60px;
+}
 .Home-title {
     font-size: 2.2rem;
 }
