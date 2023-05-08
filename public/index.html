@@ -11,7 +11,7 @@
 
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
  
-    <title>Home</title>
+    
   </head>
   <body>
     <div id="root"></div>
@@ -22,6 +22,15 @@
     } else {
       alert("STDIO: Your browser does not support sessionStorage!");
     } -->
+  <!-- </script> -->
+  <script>
+    // Lắng nghe sự kiện khi đường dẫn URL thay đổi
+    window.addEventListener("popstate", function () {
+      // Lấy tiêu đề từ phần head của trang web
+      var title = document.head.querySelector("title").textContent;
+      // Cập nhật tiêu đề trên thanh địa chỉ của trình duyệt
+      document.title = title;
+    });
   </script>
   </body>
 </html>

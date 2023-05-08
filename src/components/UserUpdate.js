@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const UserUpdate = () => {
     return (
         <div className="Au-main box-Width-500 container my-5 shadow">
+            <title>データ変更</title>
             <h1 className="text-center text-primary py-3 ">データ変更</h1>
             <div className="form-group pb-3 px-5 ">
                 <label className='pb-1' for="name">氏名:</label>
@@ -53,11 +54,19 @@ const UserUpdate = () => {
                 <label className='pb-1' for="address">住所：</label>
                 <input type="text" className="form-control" id="address" name="address" placeholder="住所" />
             </div>
-            <div className="form-group pb-3 px-5">
-                <label className='pb-1' for="note" >ノート：</label>
-                <textarea className="form-control" id="note" rows="3"></textarea>
-            </div>
-            <button type="button submit" className="Au-btn btn btn-success mx-auto d-block ">保存</button>
+            {/* <button type="button submit" className="Au-btn btn btn-success mx-auto d-block ">保存</button> */}
+            <div className="row d-flex justify-content-around mt-2">
+                            <button
+                            type="button"
+                            className="btn btn-warning col-2 mb-2 "
+                            >
+                                戻す
+                            </button>
+                            <button
+                                type="button submit" className="btn btn-success col-2 mb-2  ">
+                                保存
+                            </button>
+                        </div>
             <div className='Au-p-footer my-2'>text</div>
         </div>
     )

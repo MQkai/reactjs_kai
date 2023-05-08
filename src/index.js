@@ -9,7 +9,7 @@ import AdminUpdate from "./components/AdminUpdate";
 import ForgetPass from "./components/ForgetPass";
 import PassUpdate from "./components/PassUpdate";
 import UserUpdate from "./components/UserUpdate";
-import ConfirmAcc from "./components/ConfirmAcc";
+
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -24,7 +24,7 @@ root.render(
         <Route path="/ForgetPass" element={<ForgetPass />} />
         <Route path="/PassUpdate" element={<PassUpdate />} />
         <Route path="/UserUpdate" element={<UserUpdate />} />
-        <Route path="/ConfirmAcc" element={<ConfirmAcc />} />
+       
       </Routes>
     </BrowserRouter>
 );

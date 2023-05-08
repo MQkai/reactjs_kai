@@ -47,6 +47,7 @@ const Register = () => {
 
   return (
     <div className="R-main container my-5 shadow">
+      <title>新規登録</title>
       <h1 className="text-center text-primary py-3">新規登録</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group px-5 py-2">
@@ -150,12 +151,13 @@ const Register = () => {
             name="visa_type"
             value={post.visa_type}
             onChange={handleInput}
+
           >
-            <option selected> ビザ資格</option>
+            <option value="" disabled selected>ビザ資格選択してください。 </option>
             <option value="留学">留学</option>
             <option value="家族滞在">家族滞在</option>
             <option value="特定活動 ">特定活動 </option>
-            <option value="他">他</option>
+            {/* <option value="他">他</option> */}
           </select>
         </div>
 
@@ -181,22 +183,25 @@ const Register = () => {
             onChange={handleInput}
           />
         </div>
-        <div className="form-group px-5 py-2">
-          <label className="pb-1 form-label">ノート：</label>
-          <textarea
-            className="form-control"
-            name="status"
-            rows="3"
-            value={post.status}
-            onChange={handleInput}
-          ></textarea>
-        </div>
-        <button
+       
+        {/* <button
           type="submit"
           className="my-3 btn btn-success mx-auto d-block"
         >
           保存
-        </button>
+        </button> */}
+        <div className="row d-flex justify-content-around mt-2">
+          <button
+            type="button"
+            className="btn btn-warning col-4 mb-3 "
+          >
+            戻す
+          </button>
+          <button
+            type="button submit" className="btn btn-success col-4 mb-3  ">
+            保存
+          </button>
+        </div>
         <p className="R-p-footer pb-4 px-3 h6">
           私のページの利用規約とプライバシー規約に同意いただける場合は保存ボータン押ししてください。
         </p>

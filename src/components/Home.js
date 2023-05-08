@@ -2,14 +2,18 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
+import Messenger from "./Messenger";
 
 
 
-const HOME = () => {
+const HOME = (props) => {
 
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
   const [loginFailed, setLoginFailed] = useState(false)
+  const [inputFailed, setInputFailed] = useState(false)
+  const [loginSuccess, setLoginSuccess] = useState(false)
+
   const navigate = useNavigate();
   const login = () => {
     const item = { username, password };
@@ -21,35 +25,45 @@ const HOME = () => {
 
       .then(res => {
         console.log(res.data)
-        if (res.data.status === "SUCCESS") {
+        if (res.data.role === "USER") {
           sessionStorage.setItem("username", res.data.username)
-          sessionStorage.getItem("username");
+          setLoginSuccess(true);
           navigate('/MyPages');
+        } if (res.data.role === "ADMIN") {
+          sessionStorage.setItem("username", res.data.username);
+          navigate("/AdminPages");
         }
-        else {
+        if (!username || !password || username === "" || password === "") {
+          setInputFailed(true);
+        }else if (res.data.status === "DEFEATED")
           setLoginFailed(true);
-        }
       })
       .catch(error => {
-        alert("con me no co loi roi!!!!")
-
+        alert("エラー発生しました。サバ接続したかどうか確認してください。")
       })
 
   }
-  const handlePageClick = () =>{
-    setLoginFailed(false)
+  const handlePageClick = () => {
+    setLoginFailed(false);
+    setInputFailed(false);
   }
   //Register　遷移
   const goToRegister = useNavigate();
   return (
-    <div 
-    onClick={handlePageClick}
-    className=" Home-main container-flued ">
+    <div
+      onClick={handlePageClick}
+      className=" Home-main container-flued ">
       {loginFailed && (
         <h3 className="Home-alert alert alert-danger text-center ">
-        エラー発生しました！もう一度入力してください。
-      </h3>
+          アカウント存在しません。。
+        </h3>
       )}
+      {inputFailed && (
+        <h3 className="Home-alert alert alert-danger text-center ">
+          エラー発生しました！全部入力してください。
+        </h3>
+      )}
+     <title>ホームページ</title>
       <div className=" row">
         <div className=" col-6 Home-box1">
           <h1 className=" Home-h1 text-center  text-primary font-weight-bold ">ようこそへ</h1>

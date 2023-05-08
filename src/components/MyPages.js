@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
+
+
 const MyPages = () => {
 
   //日付計算
@@ -16,7 +18,7 @@ const MyPages = () => {
 
   // const [userData,setUserData] = useState();
   // let username = sessionStorage.getItem("username");
-
+  const [loginSuccess, setLoginSuccess] = useState(true)
   const username = sessionStorage.getItem("username");
   const [userData, setUserData] = useState("");
   const navigate = useNavigate()
@@ -29,9 +31,9 @@ const MyPages = () => {
         }
       })
       .catch(error => {
-        alert("err")
+        alert("error")
       })
-  }, [1])
+  }, [0])
 
   //年齢計算
   const calculateAge = (birthday) => {
@@ -42,7 +44,6 @@ const MyPages = () => {
   }
 
   //残り日
- 
   const currentDate = new Date();
   const visa_date = new Date(userData.visa_date);
   const timeDifference = visa_date.getTime() - currentDate.getTime();
@@ -59,9 +60,11 @@ const MyPages = () => {
   } else {
     result = `${RDay}日`;
   }
-    
 
- 
+const handlePageClick =()=> {
+  setLoginSuccess(false)
+}
+
 
 
   if (userData === undefined) {
@@ -69,83 +72,89 @@ const MyPages = () => {
     return null
   } else {
     return (
-      <div>
-      <h1 className="text-center mt-5 text-primary font-weight-bold "> {userData.name}</h1>
-     
-      <div className="clear-fix "></div>
-      <div className="table-reponsive col-4 mx-auto">
-        <table className="text-wrap table table-striped table-hover align-middle mt-3 border">
-          <thead>
-            <tr>
-              <th>氏名:</th>
-              <td>{userData.name}</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th>性別:</th>
-              <td>{userData.sex}</td>
-            </tr>
-            <tr>
-              <th>生年月日:</th>
-              <td>{userData.birthday}</td>
+      <div
+      onClick={handlePageClick}
+      >
+        <title> ユーザ ページ</title>
+        {loginSuccess && (
+          <h3 className='alert alert-success text-center mt-2'>ログイン できました！！！</h3>
+        )}
+        <h1 className="text-center mt-2 text-primary font-weight-bold "> My Pages</h1>
+
+        <div className="clear-fix "></div>
+        <div className="table-reponsive col-4 mx-auto">
+          <table className="text-wrap table table-striped table-hover align-middle mt-3 border">
+            <thead>
+              <tr>
+                <th>氏名:</th>
+                <td>{userData.name}</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>性別:</th>
+                <td>{userData.sex}</td>
               </tr>
               <tr>
-              <th>年齢:</th>
-              <td>{calculateAge(userData.birthday)}</td>
+                <th>生年月日:</th>
+                <td>{userData.birthday}</td>
+              </tr>
+              <tr>
+                <th>年齢:</th>
+                <td>{calculateAge(userData.birthday)}</td>
 
-            </tr>
-            <tr>
-              <th>在留カード番号:</th>
-              <td>{userData.visa_id}</td>
-            </tr>
-            <tr>
-              <th>ビザ期限:</th>
-              <td>{userData.visa_date}</td>
-            </tr>
-            <tr>
-              <th>残り日:</th>
-              <td>{result}</td>
-            </tr>
-            <tr>
-              <th>ビザ資格:</th>
-              <td>{userData.visa_id}</td>
-            </tr>
-            <tr>
-              <th>国籍:</th>
-              <td>{userData.country}</td>
-            </tr>
-            <tr>
-              <th>住所:</th>
-              <td>{userData.address}</td>
-            </tr>
-            
-          </tbody>
-        </table>
-        <div className="d-flex justify-content-around">
+              </tr>
+              <tr>
+                <th>在留カード番号:</th>
+                <td>{userData.visa_id}</td>
+              </tr>
+              <tr>
+                <th>ビザ期限:</th>
+                <td>{userData.visa_date}</td>
+              </tr>
+              <tr>
+                <th>残り日:</th>
+                <td>{result}</td>
+              </tr>
+              <tr>
+                <th>ビザ資格:</th>
+                <td>{userData.visa_type}</td>
+              </tr>
+              <tr>
+                <th>国籍:</th>
+                <td>{userData.country}</td>
+              </tr>
+              <tr>
+                <th>住所:</th>
+                <td>{userData.address}</td>
+              </tr>
 
-        <button
-                  onClick={() => goToUserUpdate("/UserUpdate")}
-                  className="btn btn-success text-bg-warning m-1">
-                  編集
-                </button>
-        <button
-          onClick={() => goToHome("/")}
-          className="btn btn-success m-1">
-          ログアウト
-        </button>
+            </tbody>
+          </table>
+          <div className="d-flex justify-content-around">
 
-        <button
-        onClick={() => goToConfirmAcc("/ConfirmAcc")}
-        type="button submit"
-        className=" btn btn-success m-1 bg-info">
-        パスワード変更
-      </button>
+            <button
+              onClick={() => goToUserUpdate("/")}
+              className="btn btn-success text-bg-warning m-1">
+              ログアウト
+            </button>
+            <button
+              onClick={() => goToHome("/UserUpdate")}
+              className="btn btn-success m-1">
+              編集
+            </button>
+
+            <button
+              onClick={() => goToConfirmAcc("/PassUpdate")}
+              type="button submit"
+              className=" btn btn-success m-1 bg-info">
+              パスワード変更
+            </button>
+          </div>
+
+          {/* <button type="button submit " className={style.hello}>ログアウト</button> */}
         </div>
-       
-        {/* <button type="button submit " className={style.hello}>ログアウト</button> */}
       </div>
-    </div>
 
     );
   }
