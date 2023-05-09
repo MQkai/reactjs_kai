@@ -32,15 +32,15 @@ import React, { useState } from "react";
 import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from "react-router-dom";
-import { ButtonToolbar } from "react-bootstrap";
+// import { ButtonToolbar } from "react-bootstrap";
 
 const PassUpdate = () => {
     
-    const [username, setUsername] = useState('');
+    const username = sessionStorage.getItem("getUsernameFromMyPages");
     const [password, setPassword] = useState('');
     const [newpassword, setnewPassword] = useState('');
     const [confirmpassword, setConfirmpassword] = useState('');
-    const a = useNavigate()
+    const passChangeSuccess = useNavigate()
     const handleSubmit = async (e) => {
         const item = {
             username,
@@ -48,7 +48,7 @@ const PassUpdate = () => {
             newpassword,
             confirmpassword
         }
-        a("/")
+        
         console.log(item)
         e.preventDefault();
         axios.post("http://localhost:8080/passchange", item,
@@ -58,10 +58,10 @@ const PassUpdate = () => {
                 }
             }
         )
-            .then(res => {
-                if (res.data === "OK") {
-                    
-                    console.error("パスワード変更しました。")
+            .then(res => {                
+                if (res.data === 'Password updated successfully') {
+                    //useNavigate を使ってhome　ページを遷移し　、メッセージはstate　に一回保存して、homeページを使えるように。
+                    passChangeSuccess('/', { state: { message: 'パスワード変更できました！' } });   
                 }
             }
             )
@@ -84,7 +84,7 @@ const PassUpdate = () => {
 
                         <div className="mb-3 mx-5 mt-4">
                             <label className="form-label  " for="">ユーザ ー名:</label>
-                            <input type="text" id="username" className="form-control" placeholder="ユーザ　ID" onChange={(e) => setUsername(e.target.value)} />
+                            <input type="text" id="username" className="form-control" placeholder="ユーザ　ID" value={username} disabled />
                         </div>
                         <div className="mb-3 mx-5 mt-4">
                             <label className="form-label  " for="">パスワード: </label>

@@ -1,18 +1,28 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState,useEffect } from "react";
+import { Link, useNavigate,useLocation  } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
-import Messenger from "./Messenger";
+import PassUpdate from "./PassUpdate";
 
 
 
 const HOME = (props) => {
+  //location 変数　使う
+  const location = useLocation()
+  const [message, setMessage] = useState(null);
+
+  useEffect(() => {
+    if (location.state && location.state.message) {
+      setMessage(location.state.message);
+    }
+  }, [location]);
+  
 
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
   const [loginFailed, setLoginFailed] = useState(false)
   const [inputFailed, setInputFailed] = useState(false)
-  const [loginSuccess, setLoginSuccess] = useState(false)
+  
 
   const navigate = useNavigate();
   const login = () => {
@@ -27,7 +37,6 @@ const HOME = (props) => {
         console.log(res.data)
         if (res.data.role === "USER") {
           sessionStorage.setItem("username", res.data.username)
-          setLoginSuccess(true);
           navigate('/MyPages');
         } if (res.data.role === "ADMIN") {
           sessionStorage.setItem("username", res.data.username);
@@ -46,6 +55,7 @@ const HOME = (props) => {
   const handlePageClick = () => {
     setLoginFailed(false);
     setInputFailed(false);
+    setMessage(null);
   }
   //Register　遷移
   const goToRegister = useNavigate();
@@ -53,6 +63,7 @@ const HOME = (props) => {
     <div
       onClick={handlePageClick}
       className=" Home-main container-flued ">
+      {message && <h3 className="Home-alert alert alert-success text-center ">{message}</h3>}
       {loginFailed && (
         <h3 className="Home-alert alert alert-danger text-center ">
           アカウント存在しません。。

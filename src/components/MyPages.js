@@ -22,11 +22,12 @@ const MyPages = () => {
   const username = sessionStorage.getItem("username");
   const [userData, setUserData] = useState("");
   const navigate = useNavigate()
-  sessionStorage.getItem("username");
+  // sessionStorage.getItem("username");
   useEffect(() => {
     axios.get("http://localhost:8080/mypage/" + username)
       .then(res => {
         if (res.data !== undefined) {
+          sessionStorage.setItem('getUsernameFromMyPages',username)
           setUserData(res.data[0])
         }
       })
@@ -61,6 +62,7 @@ const MyPages = () => {
     result = `${RDay}日`;
   }
 
+  
 const handlePageClick =()=> {
   setLoginSuccess(false)
 }
