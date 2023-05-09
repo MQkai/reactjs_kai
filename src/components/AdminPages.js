@@ -98,8 +98,9 @@ const AdminPages = () => {
   // ログインる変数名を取得する
   //ADMINとして仮想変数を作成する
   // tao bien ao voi tai khoan dang dang nhap la admin
-  let username = "admin";
-
+  // let username = "admin";
+  const username = 'admin'
+  
   useEffect(() => {
     axios
       .post(
@@ -233,7 +234,7 @@ const AdminPages = () => {
         <button
           onClick={() => goToHome("/")}
           type="button submit "
-          className="btn lg-btn btn-success d-block mx-auto my-4"
+          className="btn lg-btn btn-warning d-block mx-auto my-4"
         >
           ログアウト
         </button>

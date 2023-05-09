@@ -1,8 +1,17 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate } from 'react-router-dom';
 
 
 const AdminUpdate = () => {
+
+ 
+     const backToAdminPages = useNavigate()
+ 
+     const handleBack = () => {
+         backToAdminPages('/AdminPages', {state: {username:'admin'}});
+     }
+
     return (
         <div className="Au-main box-Width-500 container my-5 shadow">
             <title> データ変更</title>
@@ -57,6 +66,7 @@ const AdminUpdate = () => {
             {/* <button type="button submit" className="Au-btn btn btn-success mx-auto d-block ">保存</button> */}
             <div className="row d-flex justify-content-around mt-2">
                 <button
+                    onClick={handleBack}
                     type="button"
                     className="btn btn-warning col-4 mb-3 "
                 >

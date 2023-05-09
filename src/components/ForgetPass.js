@@ -52,6 +52,7 @@ const ForgetPass = () => {
     const [newpassword, setnewPassword] = useState('');
     const [confirmnewpass, setConfirmnewpass] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const backHome = useNavigate()
     const navigate = useNavigate()
     const handleSubmit = async (e) => {
         setBirthday(birthday.replace(/-/g, '/'));
@@ -84,6 +85,9 @@ const ForgetPass = () => {
 
     };
 
+    const handleBack = () =>{
+        backHome('/')
+    }
     return (
         <div className="container ">
            <title>パスワード忘れた方</title>
@@ -123,6 +127,7 @@ const ForgetPass = () => {
                         </div> */}
                         <div className="row d-flex justify-content-around mt-2">
                             <button
+                            onClick={handleBack}
                             type="button"
                             className="btn btn-warning col-4 mb-5 "
                             >

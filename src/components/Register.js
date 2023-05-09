@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
+  const backHome = useNavigate();
   const [post, setPost] = useState({
     username: "",
     password: "",
@@ -45,13 +46,17 @@ const Register = () => {
       });
   }
 
+  const handleBack = () =>{
+    backHome('/')
+  }
+
   return (
     <div className="R-main container my-5 shadow">
       <title>新規登録</title>
       <h1 className="text-center text-primary py-3">新規登録</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group px-5 py-2">
-          <label className="pb-1">ユーザ ID:</label>
+          <label className="pb-1">ユーザ ID:</label> error
           <input
             type="text"
             className="form-control"
@@ -192,6 +197,7 @@ const Register = () => {
         </button> */}
         <div className="row d-flex justify-content-around mt-2">
           <button
+            onClick={handleBack}
             type="button"
             className="btn btn-warning col-4 mb-3 "
           >

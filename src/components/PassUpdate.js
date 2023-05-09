@@ -41,6 +41,7 @@ const PassUpdate = () => {
     const [newpassword, setnewPassword] = useState('');
     const [confirmpassword, setConfirmpassword] = useState('');
     const passChangeSuccess = useNavigate()
+    const backToMyPages = useNavigate();
     const handleSubmit = async (e) => {
         const item = {
             username,
@@ -48,7 +49,6 @@ const PassUpdate = () => {
             newpassword,
             confirmpassword
         }
-        
         console.log(item)
         e.preventDefault();
         axios.post("http://localhost:8080/passchange", item,
@@ -71,6 +71,10 @@ const PassUpdate = () => {
             })
 
     };
+    //MyPages を戻す
+    const handleBack = () => {
+        backToMyPages('/MyPages',{state: {username:username}});
+    }
 
     return (
         <div className="container ">
@@ -84,7 +88,7 @@ const PassUpdate = () => {
 
                         <div className="mb-3 mx-5 mt-4">
                             <label className="form-label  " for="">ユーザ ー名:</label>
-                            <input type="text" id="username" className="form-control" placeholder="ユーザ　ID" value={username} disabled />
+                            <input type="text" id="username" className="form-control" placeholder="ユーザ ID" value={username} disabled />
                         </div>
                         <div className="mb-3 mx-5 mt-4">
                             <label className="form-label  " for="">パスワード: </label>
@@ -92,7 +96,7 @@ const PassUpdate = () => {
                         </div>
                         <div className="mb-3 mx-5 mt-4">
                             <label className="form-label  " for="">新しいパスワード: </label>
-                            <input type="newpassword" value={newpassword} name="newpassword" className="form-control" onChange={(e) => setnewPassword(e.target.value)} placeholder="新しいパスワード" />
+                            <input type="password" value={newpassword} name="newpassword" className="form-control" onChange={(e) => setnewPassword(e.target.value)} placeholder="新しいパスワード" />
                         </div>
                         <div className="mb-3 mx-5">
                             <label className="form-label  " for="">もう一度パスワードを入力してください</label>
@@ -100,6 +104,7 @@ const PassUpdate = () => {
                         </div>
                         <div className="row d-flex justify-content-around mt-5">
                             <button
+                            onClick={handleBack}
                             type="button"
                             className="btn btn-warning col-4 mb-5 "
                             >

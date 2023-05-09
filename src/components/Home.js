@@ -1,5 +1,5 @@
-import React, { useState,useEffect } from "react";
-import { Link, useNavigate,useLocation  } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
 import PassUpdate from "./PassUpdate";
@@ -7,22 +7,23 @@ import PassUpdate from "./PassUpdate";
 
 
 const HOME = (props) => {
-  //location 変数　使う
+  //location使う
   const location = useLocation()
+  //message の状態useStateに設定する
   const [message, setMessage] = useState(null);
-
   useEffect(() => {
     if (location.state && location.state.message) {
       setMessage(location.state.message);
     }
   }, [location]);
-  
+
 
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
   const [loginFailed, setLoginFailed] = useState(false)
-  const [inputFailed, setInputFailed] = useState(false)
-  
+  const [userIdInputFailed, setUserIdInputFailed] = useState(false)
+  const [passwordInputFailed, setPasswordInputFailed] = useState(false)
+
 
   const navigate = useNavigate();
   const login = () => {
@@ -37,14 +38,18 @@ const HOME = (props) => {
         console.log(res.data)
         if (res.data.role === "USER") {
           sessionStorage.setItem("username", res.data.username)
-          navigate('/MyPages');
+          navigate('/MyPages', { state: { message: 'ログインできました！' } });
         } if (res.data.role === "ADMIN") {
+          console.log(res.data)
           sessionStorage.setItem("username", res.data.username);
           navigate("/AdminPages");
         }
-        if (!username || !password || username === "" || password === "") {
-          setInputFailed(true);
-        }else if (res.data.status === "DEFEATED")
+        if (!username || username === "" ) {
+          setUserIdInputFailed(true);
+        } if(!password || password === "") {
+          setPasswordInputFailed(true);
+        }
+        else if (res.data.status === "DEFEATED")
           setLoginFailed(true);
       })
       .catch(error => {
@@ -54,7 +59,8 @@ const HOME = (props) => {
   }
   const handlePageClick = () => {
     setLoginFailed(false);
-    setInputFailed(false);
+    setUserIdInputFailed(false);
+    setPasswordInputFailed(false);
     setMessage(null);
   }
   //Register　遷移
@@ -69,12 +75,8 @@ const HOME = (props) => {
           アカウント存在しません。。
         </h3>
       )}
-      {inputFailed && (
-        <h3 className="Home-alert alert alert-danger text-center ">
-          エラー発生しました！全部入力してください。
-        </h3>
-      )}
-     <title>ホームページ</title>
+
+      <title>ホームページ</title>
       <div className=" row">
         <div className=" col-6 Home-box1">
           <h1 className=" Home-h1 text-center  text-primary font-weight-bold ">ようこそへ</h1>
@@ -86,6 +88,11 @@ const HOME = (props) => {
             <legend className=" Home-title text-center mt-4  text-primary h3 ">ログイン</legend>
             <div className=" mb-3 mx-5">
               <label className=" form-label  " for="">ユーザ ID:</label>
+              {userIdInputFailed && (
+                <h6 className=" text-center text-danger ">
+                  ユーザ ID入力してください。
+                </h6>
+              )}
               <input
                 onChange={(e) => setUsername(e.target.value)}
                 type="text"
@@ -95,6 +102,11 @@ const HOME = (props) => {
             </div>
             <div className=" mb-3 mx-5">
               <label className=" form-label  " for="">パスワード:</label>
+              {passwordInputFailed && (
+                <h6 className="text-center text-danger ">
+                  パスワード入力してください。
+                </h6>
+              )}
               <input
                 onChange={(e) => setPassword(e.target.value)}
                 type="password" id="PassWord"

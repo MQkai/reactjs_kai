@@ -1,9 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 
 const UserUpdate = () => {
+    //location使う
+    const location = useLocation()
+    //message の状態useStateに設定する
+    const [message, setMessage] = useState(null);
+    useEffect(() => {
+        if (location.state && location.state.message) {
+            setMessage(location.state.message);
+        }
+    }, [location]);
+
+    const username = sessionStorage.getItem("username");
+    const backToMyPages = useNavigate()
+
+    const handleBack = () => {
+        backToMyPages('/MyPages', {state: {username:username}});
+    }
     return (
         <div className="Au-main box-Width-500 container my-5 shadow">
             <title>データ変更</title>
@@ -56,17 +73,18 @@ const UserUpdate = () => {
             </div>
             {/* <button type="button submit" className="Au-btn btn btn-success mx-auto d-block ">保存</button> */}
             <div className="row d-flex justify-content-around mt-2">
-                            <button
-                            type="button"
-                            className="btn btn-warning col-2 mb-2 "
-                            >
-                                戻す
-                            </button>
-                            <button
-                                type="button submit" className="btn btn-success col-2 mb-2  ">
-                                保存
-                            </button>
-                        </div>
+                <button
+                    onClick={handleBack}
+                    type="button"
+                    className="btn btn-warning col-2 mb-2 "
+                >
+                    戻す
+                </button>
+                <button
+                    type="button submit" className="btn btn-success col-2 mb-2  ">
+                    保存
+                </button>
+            </div>
             <div className='Au-p-footer my-2'>text</div>
         </div>
     )

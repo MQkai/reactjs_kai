@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import style from "../css/test.module.css";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -9,16 +9,21 @@ import axios from 'axios';
 
 const MyPages = () => {
 
-  //日付計算
+  //location使う
+  const location = useLocation()
+  //message の状態useStateに設定する
+  const [message, setMessage] = useState(null);
+  useEffect(() => {
+    if (location.state && location.state.message) {
+      setMessage(location.state.message);
+    }
+  }, [location]);
 
   //遷移
   const goToHome = useNavigate()
   const goToUserUpdate = useNavigate()
   const goToConfirmAcc = useNavigate()
 
-  // const [userData,setUserData] = useState();
-  // let username = sessionStorage.getItem("username");
-  const [loginSuccess, setLoginSuccess] = useState(true)
   const username = sessionStorage.getItem("username");
   const [userData, setUserData] = useState("");
   const navigate = useNavigate()
@@ -64,7 +69,7 @@ const MyPages = () => {
 
   
 const handlePageClick =()=> {
-  setLoginSuccess(false)
+  setMessage(null);
 }
 
 
@@ -78,9 +83,7 @@ const handlePageClick =()=> {
       onClick={handlePageClick}
       >
         <title> ユーザ ページ</title>
-        {loginSuccess && (
-          <h3 className='alert alert-success text-center mt-2'>ログイン できました！！！</h3>
-        )}
+        {message && <h3 className="Home-alert alert alert-success text-center mt-1">{message}</h3>}
         <h1 className="text-center mt-2 text-primary font-weight-bold "> My Pages</h1>
 
         <div className="clear-fix "></div>
