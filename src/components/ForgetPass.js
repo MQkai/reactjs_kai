@@ -1,48 +1,7 @@
-// import React from 'react'
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import { useNavigate } from 'react-router-dom';
-
-
-
-// const ForgetPass = () => {
-
-//         //PassUpdateまで遷移
-//         const goToPassUpdate = useNavigate() 
-    
-
-//     return (
-//         <div className="container ">
-
-//             <div className="box-Width-500  mx-auto my-5 ">
-//                 <div className="form-group mx-auto shadow ">
-//                     <legend className="text-center mt-4 font-weight-bold text-primary h3 ">パスワード忘れた？</legend>
-//                     <div className="mb-3 mx-5 mt-4">
-//                         <label className="form-label  " for="">ユーザ ID:</label>
-//                         <input type="text" id="UserId" className="form-control" placeholder="ユーザ　ID" />
-//                     </div>
-//                     <div className="mb-3 mx-5">
-//                         <label className="form-label  " for="">生年月日：</label>
-//                         <input type="date" id="birthday" name="birthday" className="form-control " placeholder="生年月日" />
-//                     </div>
-//                     <div className="row d-flex justify-content-center mt-5">
-//                          <button  
-//                              onClick={() => goToPassUpdate('/PassUpdate')} 
-//                             className="btn btn-success col-4 mb-5 ">
-//                             次進む
-//                         </button>
-//                     </div>
-
-//                 </div>
-//             </div>
-//         </div>
-//     )
-// }
-
-// export default ForgetPass;
 import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const ForgetPass = () => {
@@ -54,6 +13,8 @@ const ForgetPass = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const backHome = useNavigate()
     const navigate = useNavigate()
+
+
     const handleSubmit = async (e) => {
         setBirthday(birthday.replace(/-/g, '/'));
         const item = {
@@ -65,7 +26,7 @@ const ForgetPass = () => {
         }
         console.log(item)
         e.preventDefault();
-        axios.post("http://localhost:8080/forgetPassword", item,
+        await axios.post("http://localhost:8080/forgetPassword", item,
             {
                 headers: {
                     'Content-Type': 'application/json'
@@ -85,23 +46,21 @@ const ForgetPass = () => {
 
     };
 
-    const handleBack = () =>{
+    const handleBack = () => {
         backHome('/')
     }
     return (
         <div className="container ">
-           <title>パスワード忘れた方</title>
+            <title>パスワード忘れた方</title>
             <form onSubmit={handleSubmit}>
-
-
                 {errorMessage && <div>{setErrorMessage}</div>}
-
                 <div className="box-Width-500  mx-auto my-5 ">
                     <div className="form-group mx-auto shadow ">
                         <legend className="text-center mt-4 font-weight-bold text-primary h3 ">パスワード忘れた？</legend>
                         <div className="mb-3 mx-5 mt-4">
                             <label className="form-label  " for="">ユーザ ー名:</label>
-                            <input type="text" id="username" className="form-control" placeholder="ユーザ　ID" onChange={(e) => setUsername(e.target.value)} />
+                            <input type="text" id="username" className="form-control" placeholder="ユーザ　ID" 
+                            onChange={(e) => setUsername(e.target.value)} />
                         </div>
                         <div className="form-group px-5 py-2">
                             <label className="pb-1">在留カード番号：</label>
@@ -127,14 +86,14 @@ const ForgetPass = () => {
                         </div> */}
                         <div className="row d-flex justify-content-around mt-2">
                             <button
-                            onClick={handleBack}
-                            type="button"
-                            className="btn btn-warning col-4 mb-5 "
+                                onClick={handleBack}
+
+                                className="btn btn-warning col-4 mb-5 "
                             >
                                 戻す
                             </button>
                             <button
-                                type="button submit" className="btn btn-success col-4 mb-5  ">
+                                type="submit" className="btn btn-success col-4 mb-5  ">
                                 保存
                             </button>
                         </div>

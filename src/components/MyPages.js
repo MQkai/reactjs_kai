@@ -22,7 +22,7 @@ const MyPages = () => {
   //遷移
   const goToHome = useNavigate()
   const goToUserUpdate = useNavigate()
-  const goToConfirmAcc = useNavigate()
+  const goToPassUpdate = useNavigate()
 
   const username = sessionStorage.getItem("username");
   const [userData, setUserData] = useState("");
@@ -67,7 +67,27 @@ const MyPages = () => {
     result = `${RDay}日`;
   }
 
-  
+ //username はpassupdate.jsに転送する。
+ const handleClick = () =>{
+    axios.get("http://localhost:8080/update/" + username,{
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(res => {
+    console.log(res.data)
+    console.log(username)
+    sessionStorage.setItem('userAcc',username)
+    goToUserUpdate('/UserUpdate')
+  })
+  .catch(error => {
+    alert('error')
+  })
+    
+    
+ }
+
+
 const handlePageClick =()=> {
   setMessage(null);
 }
@@ -139,18 +159,19 @@ const handlePageClick =()=> {
           <div className="d-flex justify-content-around">
 
             <button
-              onClick={() => goToUserUpdate("/")}
+              onClick={() => goToHome("/")}
               className="btn btn-success text-bg-warning m-1">
               ログアウト
             </button>
             <button
-              onClick={() => goToHome("/UserUpdate")}
+            
+              onClick={handleClick}
               className="btn btn-success m-1">
               編集
             </button>
 
             <button
-              onClick={() => goToConfirmAcc("/PassUpdate")}
+              onClick={() => goToPassUpdate("/PassUpdate")}
               type="button submit"
               className=" btn btn-success m-1 bg-info">
               パスワード変更

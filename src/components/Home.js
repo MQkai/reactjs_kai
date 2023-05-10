@@ -43,14 +43,17 @@ const HOME = (props) => {
           console.log(res.data)
           sessionStorage.setItem("username", res.data.username);
           navigate("/AdminPages");
-        }
-        if (!username || username === "" ) {
+        }else if ((!username || username === "") && (!password || password === "")) {
           setUserIdInputFailed(true);
-        } if(!password || password === "") {
           setPasswordInputFailed(true);
         }
-        else if (res.data.status === "DEFEATED")
-          setLoginFailed(true);
+        else if (!username || username === "" ) {
+          setUserIdInputFailed(true);
+        }else if(!password || password === "") {
+          setPasswordInputFailed(true);
+        }
+        else if (  res.data.status === "DEFEATED"){
+          setLoginFailed(true);}
       })
       .catch(error => {
         alert("エラー発生しました。サバ接続したかどうか確認してください。")
@@ -98,7 +101,7 @@ const HOME = (props) => {
                 type="text"
                 value={username}
                 className=" form-control form-control"
-                placeholder="ユーザ　ID" />
+                placeholder="ユーザID" />
             </div>
             <div className=" mb-3 mx-5">
               <label className=" form-label  " for="">パスワード:</label>

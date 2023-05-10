@@ -10,6 +10,7 @@ const Register = () => {
     username: "",
     password: "",
     name: "",
+    // hiragana: "",
     sex: "",
     birthday: "",
     visa_ID: "",
@@ -89,6 +90,17 @@ const Register = () => {
             onChange={handleInput}
           />
         </div>
+        {/* <div className="form-group px-5 py-2">
+          <label className="pb-1">フリガナ:</label>
+          <input
+            type="text"
+            className="form-control"
+            name="hiragana"
+            placeholder="フリガナ"
+            value={post.hiragana}
+            onChange={handleInput}
+          />
+        </div> */}
         <div className="form-check row py-3">
           <p className=" R-p ml-3 mb-2 d-inline">性別：</p>
           <div className="form-check col-4 d-inline ">
