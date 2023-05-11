@@ -27,7 +27,7 @@
     // Lắng nghe sự kiện khi đường dẫn URL thay đổi
     window.addEventListener("popstate", function () {
       // Lấy tiêu đề từ phần head của trang web
-      var title = document.head.querySelector("title").textContent;
+      var title = document.head.querySelector("title");
       // Cập nhật tiêu đề trên thanh địa chỉ của trình duyệt
       document.title = title;
     });

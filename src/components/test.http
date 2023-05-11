@@ -2,9 +2,9 @@ POST  http://localhost:8080/forgetPassword HTTP/1.1
 Content-Type: application/json
 
 {
-    "username": "7",
-    "visa_id": "abc123@",
-    "birthday": "2023/05/09",
-    "newpassword":"13",
-    "confirmnewpass":"13" 
+    "username": "hello123456",
+    "visa_id": "FE1234567890",
+    "birthday": "2023/05/01",
+    "newpassword":"12345678",
+    "confirmnewpass":"12345678" 
 }

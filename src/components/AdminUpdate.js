@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useActionData, useLocation, useNavigate } from 'react-router-dom';
+import {  useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -52,9 +52,9 @@ const AdminUpdate = () => {
 
 
 
-    if (userData === undefined) {
+    if (userData.length === 0) {
         return (
-            <h1>ユーザーがdeleteされました。</h1>
+            AdminPages('/AdminPages')
         )
     } else {
 

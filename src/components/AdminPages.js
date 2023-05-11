@@ -25,6 +25,7 @@ const AdminPages = () => {
         }
       )
       .then((res) => {
+        console.log(res.data.birthday)
         setUserData(res.data);
       });
   }, [0]);
@@ -83,7 +84,6 @@ const AdminPages = () => {
 
   //update
   const handleUpdate = (str) => {
-    console.log('aaaaa' + str)
     axios.get("http://localhost:8080/update/" + str, 
     {
       headers: {
@@ -92,6 +92,9 @@ const AdminPages = () => {
     })
     
       .then(res => {
+        if(userData === []){
+          alert('nope')
+        }
         console.log(res.data)
         sessionStorage.setItem('userAcc1', str)
         goToAdminUpdate('/AdminUpdate')
