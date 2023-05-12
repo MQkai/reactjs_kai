@@ -94,8 +94,8 @@ const MyPages = () => {
 
 const handlePageClick =()=> {
   setMessage(null);
-  console.log(userData.visa_date)
-  console.log('aaaaaa' + timeDifference)
+  
+  
 }
 
 

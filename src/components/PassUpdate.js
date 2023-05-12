@@ -138,6 +138,7 @@ const PassUpdate = () => {
     const passChangeSuccess = useNavigate()
     const backToMyPages = useNavigate();
     const [inputFailed, setInputFailed] = useState(false)
+    const [error,setError] = useState(false)
 
 
     const handleSubmit = async (e) => {
@@ -149,20 +150,20 @@ const PassUpdate = () => {
         }
         console.log(item)
         e.preventDefault();
-        setInputFailed(true)
-        if(1<password.length<6) {
+        //prevent before handlein axios
+        if(!password){
             setInputFailed(true)
-        }if(1<newpassword.length<6){
-            setInputFailed(true)
-        }if(confirmpassword !== newpassword){
-            setInputFailed(true)
-        }else{
-            //useNavigate を使ってhome　ページを遷移し　、メッセージはstate　に一回保存して、homeページを使えるように。
-            passChangeSuccess('/', { state: { message: 'パスワード変更できました！' } });
-            // if (res.data === 'Password updated successfully' && setInputFailed(false)) {
-                
-            // }
+            return;
         }
+        if(newpassword.length<6){
+            setInputFailed(true)
+            return;
+        }
+        if(confirmpassword !== newpassword){
+            setInputFailed(true)
+            return;
+        }
+        
         axios.post("http://localhost:8080/passchange", item,
             {
                 headers: {
@@ -170,13 +171,16 @@ const PassUpdate = () => {
                 }
             }
         )
-            .then(res => {
-                
+            .then(res => {            
+                if(res.data === "` updated successfully"){
+                    passChangeSuccess('/', { state: { message: 'パスワード変更できました！' } });
+                }
             }
             )
             .catch(error => {
-
-                console.error("error");
+                if(error.response.data === "username and password not match."){
+                    setError(true)
+                }
             })
 
     };
@@ -184,9 +188,13 @@ const PassUpdate = () => {
     const handleBack = () => {
         backToMyPages('/MyPages', { state: { username: username } });
     }
+    const handleClick = () =>{
+        setError(false)
+    }
 
     return (
-        <div className="container ">
+        <div onClick={handleClick} className="container ">
+            
             <title>パスワード変更</title>
             <form onSubmit={handleSubmit}>
                 <div className="box-Width-500 mx-auto my-5 ">
@@ -208,16 +216,16 @@ const PassUpdate = () => {
                             <label className="form-label  " for="">パスワード: </label>
                             <input type="password" value={password} name="password" className="form-control"
                                 onChange={(e) => setPassword(e.target.value)} placeholder="パスワードを入力してください" />
-                            {inputFailed && !password && <h6 className="text-center text-danger"> パスワード入力してください</h6>}
-                            {inputFailed && (password.length > 1 && password.length < 6) && (<h6 className="text-center text-danger"> パスワードは6字以上20字以下で入力してください</h6>) }
+                            {inputFailed && (  !password) && (<h6 className="text-center text-danger"> パスワード入力してください</h6>) }
+                            {error && (<h6 className="text-center text-danger"> パスワード致しません。</h6>) }
                         </div>
 
                         <div className="mb-3 mx-5 mt-4">
                             <label className="form-label  " for="">新しいパスワード: </label>
                             <input type="password" value={newpassword} name="newpassword" className="form-control"
                                 onChange={(e) => setnewPassword(e.target.value)} placeholder="新しいパスワード" />
-                                {inputFailed && !newpassword  && <h6 className="text-center text-danger"> パスワードは6字以上20字以下で入力してください</h6>}
-                                {inputFailed && (newpassword.length > 1 && newpassword.length < 6) && (<h6 className="text-center text-danger"> 新しいパスワードは6字以上20字以下で入力してください</h6>) }
+                                
+                                {inputFailed && (newpassword.length<6)&& (<h6 className="text-center text-danger"> 新しいパスワードは6字以上20字以下で入力してください</h6>) }
                         </div>
                         <div className="mb-3 mx-5">
                             <label className="form-label  " for="">もう一度パスワードを入力してください</label>
@@ -225,7 +233,7 @@ const PassUpdate = () => {
                                 placeholder="再度パスワードを入力してください。。"
                                 onChange={(e) => setConfirmpassword(e.target.value)} />
                                 {inputFailed && !confirmpassword  && <h6 className="text-center text-danger ">再度パスワードを入力してください。</h6>}
-                                {inputFailed && (confirmpassword.length>1 && confirmpassword !== newpassword) && (<h6 className="text-center text-danger ">パスワードが一致しません。もう一度入力してください。。</h6>) }
+                                {inputFailed && (confirmpassword.length>0 && confirmpassword !== newpassword) && (<h6 className="text-center text-danger ">パスワードが一致しません。もう一度入力してください。。</h6>) }
 
                         </div>
 
