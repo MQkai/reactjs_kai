@@ -1,12 +1,24 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
 
 const AdminPages = () => {
+  
+  //location使う
+  const location = useLocation()
+  //message の状態useStateに設定する
+  const [message, setMessage] = useState(null);
+  useEffect(() => {
+    if (location.state && location.state.message) {
+      setMessage(location.state.message);
+    }
+  }, [location]);
+  
   const [userData, setUserData] = useState([]);
-
+  const navigate = useNavigate()
+  const [errorMes,setErrorMess]=useState(false)
   // ログインる変数名を取得する
   //ADMINとして仮想変数を作成する
   // tao bien ao voi tai khoan dang dang nhap la admin
@@ -92,18 +104,27 @@ const AdminPages = () => {
     })
     
       .then(res => {
-        if(userData === []){
-          alert('nope')
+        if(res.data.length === 0){
+          //de lai trang admin
+          setErrorMess(true)
+          navigate('/AdminPages')
         }
-        console.log(res.data)
+        else if(res.data.length !== 0){
+          console.log(res.data)
         sessionStorage.setItem('userAcc1', str)
         goToAdminUpdate('/AdminUpdate')
+        }
+        
       })
       .catch(error => {
         console(error)
       })
+      
 
-
+  }
+  const handleClick = () => {
+      setErrorMess(false)
+      setMessage(null);
   }
 
   //遷移
@@ -111,8 +132,10 @@ const AdminPages = () => {
   const goToHome = useNavigate();
 
   return (
-    <div>
+    <div onClick={handleClick}>
       <title> ユーザ一覧</title>
+      {errorMes && <h3  className="mt-2 alert alert-danger text-center "> このアカウントはもう存在しません。 </h3>}
+      {message && <h3 className="Home-alert alert alert-success text-center mt-1">{message}</h3>}
       <h1 className="text-center my-5 text-primary font-weight-bold ">
         ようこそ 管理者 さん!
       </h1>

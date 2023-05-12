@@ -201,18 +201,17 @@ const ForgetPass = () => {
                                 value={post.username}
                                 onChange={handleInput}
                             />
-                            {inputFailed && (
-                                !post.username ||
-                                !/^[A-Za-z0-9]+$/.test(post.username) ||
-                                post.username.length < 6 ||
-                                post.username.length > 20
-                            ) && (
-                                    <h6 className="text-center text-danger">
-                                        ユーザIDは6字以上20字以下で入力してください
-                                    </h6>
-                                )}
                         </div>
-
+                        {inputFailed && (
+                            !post.username ||
+                            !/^[A-Za-z0-9]+$/.test(post.username) ||
+                            post.username.length < 6 ||
+                            post.username.length > 20
+                        ) && (
+                                <h6 className="text-center text-danger">
+                                    ユーザIDは6字以上20字以下で入力してください
+                                </h6>
+                            )}
                         <div className="form-group px-5 py-2">
                             <label className="pb-1">在留カード番号：</label>
                             <input
@@ -223,50 +222,43 @@ const ForgetPass = () => {
                                 value={post.visa_id}
                                 onChange={handleInput}
                             />
-                            {inputFailed && (!post.visa_id || !/^[A-Z0-9]{12}$/.test(post.visa_id)) && (
-                                <h6 className="text-center text-danger ">
-                                    在留カード番号は12字で入力してください
-                                </h6>
-                            )}
+
                         </div>
-
-
-
-
-
-                        <div className="mb-3 mx-5">
+                        {inputFailed && (!post.visa_id || !/^[A-Z0-9]{12}$/.test(post.visa_id)) && (
+                            <h6 className="text-center text-danger ">
+                                在留カード番号は12字で入力してください
+                            </h6>
+                        )}
+                        <div className="mb-2 mx-5">
                             <label className="form-label  " for="">生年月日：</label>
                             <input type="date" id="birthday" name="birthday" className="form-control " placeholder="生年月日" onChange={handleInput} />
-                            {inputFailed && (!post.birthday || selectedBirthday > today) && (
-                                <h6 className="text-center text-danger ">
-                                    生年月日を選択してください
-                                </h6>
-                            )}
                         </div>
+                        {inputFailed && (!post.birthday || selectedBirthday > today) && (
+                            <h6 className="text-center text-danger ">
+                                生年月日を選択してください
+                            </h6>
+                        )}
 
 
                         <div className="mb-3 mx-5">
                             <label className="form-label  " for="">新しいパスワード</label>
                             <input type="password" name="newpassword" className="form-control " placeholder="新しパスワード" onChange={handleInput} />
-                            {inputFailed && (!post.newpassword ||
-                                !/^[A-Za-z0-9]+$/.test(post.newpassword) || post.newpassword.length < 6 || post.newpassword.length > 20) && (
-                                    <h6 className="text-center text-danger ">
-                                        パスワードは6字以上20字以下で入力してください
-                                    </h6>
-                                )}
-
                         </div>
-
+                        {inputFailed && (!post.newpassword ||
+                            !/^[A-Za-z0-9]+$/.test(post.newpassword) || post.newpassword.length < 6 || post.newpassword.length > 20) && (
+                                <h6 className="pb-2 text-center text-danger ">
+                                    パスワードは6字以上20字以下で入力してください
+                                </h6>
+                            )}
                         <div className="mb-3 mx-5">
                             <label className="form-label  " for="">もう一度パスワードを入力してください</label>
                             <input type="password" name="confirmnewpass" className="form-control " placeholder="もう一度パスワード入力してください。" onChange={handleInput} />
-                            {inputFailed && (post.confirmnewpass !== post.newpassword || !post.confirmnewpass) && (
-                                <h6 className="text-center text-danger ">
+                        </div>
+                        {inputFailed && (post.confirmnewpass !== post.newpassword || !post.confirmnewpass) && (
+                                <h6 className="pb-3 text-center text-danger ">
                                     新しいパスワードと同じパスワードを入力してください。
                                 </h6>
                             )}
-
-                        </div>
                         <div className="row d-flex justify-content-around mt-2">
                             <button
                                 onClick={() => goToHome("/")}

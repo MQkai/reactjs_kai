@@ -41,32 +41,7 @@ const MyPages = () => {
       })
   }, [0])
 
-  //年齢計算
-  const calculateAge = (birthday) => {
-    const birthDate = new Date(birthday);
-    const currentDate = new Date();
-    const age = currentDate.getFullYear() - birthDate.getFullYear();
-    return age;
-  }
-
-  //残り日
-  const currentDate = new Date();
-  const visa_date = new Date(userData.visa_date);
-  const timeDifference = visa_date.getTime() - currentDate.getTime();
-  const day = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-  const year = Math.floor(day / 365);
-  const month = Math.floor((day % 365) / 30);
-  const RDay = day - (year * 365) - (month * 30);
-  let result = '';
-
-  if (day > 365) {
-    result = `${year} 年 ${month}月 ${RDay}日`;
-  } else if (day > 30.45) {
-    result = `${month}月 ${RDay}日`;
-  } else {
-    result = `${RDay}日`;
-  }
-
+  
  //username はpassupdate.jsに転送する。
  const handleClick = () =>{
     axios.get("http://localhost:8080/update/" + username,{
@@ -87,9 +62,40 @@ const MyPages = () => {
     
  }
 
+ //年齢計算
+ const calculateAge = (birthday) => {
+  const birthDate = new Date(birthday);
+  const currentDate = new Date();
+  const age = currentDate.getFullYear() - birthDate.getFullYear();
+  return age;
+}
+
+//残り日
+  const currentDate = new Date();
+  const visa_date1 = new Date(userData.visa_date);
+  const timeDifference = visa_date1.getTime() - currentDate.getTime();
+  const day = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+  const year = Math.floor(day / 365);
+  const month = Math.floor((day % 365) / 30);
+  const RDay = day - year * 365 - month * 30;
+  let result = "";
+
+  if (day > 365) {
+    result = `${year} 年 ${month}月 ${RDay}日`;
+  } else if (day > 30.45) {
+    result = `${month}月 ${RDay}日`;
+  } else {
+    result = `${RDay}日`;
+  }
+  
+
+
+
 
 const handlePageClick =()=> {
   setMessage(null);
+  console.log(userData.visa_date)
+  console.log('aaaaaa' + timeDifference)
 }
 
 
