@@ -27,7 +27,6 @@ const MyPages = () => {
   const username = sessionStorage.getItem("username");
   const [userData, setUserData] = useState("");
   const navigate = useNavigate()
-  // sessionStorage.getItem("username");
   useEffect(() => {
     axios.get("http://localhost:8080/mypage/" + username)
       .then(res => {
@@ -79,8 +78,11 @@ const MyPages = () => {
   const month = Math.floor((day % 365) / 30);
   const RDay = day - year * 365 - month * 30;
   let result = "";
-
-  if (day > 365) {
+  
+  if(timeDifference < 0){
+    result = "ビザの有効期限が切れました";
+  }
+  else if (day > 365) {
     result = `${year} 年 ${month}月 ${RDay}日`;
   } else if (day > 30.45) {
     result = `${month}月 ${RDay}日`;

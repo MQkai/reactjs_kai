@@ -9,9 +9,11 @@ import AdminUpdate from "./components/AdminUpdate";
 import ForgetPass from "./components/ForgetPass";
 import PassUpdate from "./components/PassUpdate";
 import UserUpdate from "./components/UserUpdate";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 
-
+library.add(faMagnifyingGlass)
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <BrowserRouter>

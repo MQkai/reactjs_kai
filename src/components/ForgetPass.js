@@ -174,9 +174,7 @@ const ForgetPass = () => {
                 }
             })
             .catch((err) => {
-                console.log("error")
-                    ("入力し"
-                    )
+                console.log(err)
 
             });
     }
