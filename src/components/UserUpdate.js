@@ -43,35 +43,66 @@ const UserUpdate = () => {
     const userAcc = sessionStorage.getItem('userAcc')
     const [userData, setUserData] = useState('')
 
-    const date = new Date();
-    const day = date.getDate();//日
-    const month = date.getMonth() + 1;// Tháng hiện tại, chú ý đến việc phải cộng thêm 1 vì tháng được tính từ 0-11
-    const year = date.getFullYear();//現在の年
-    const yearOfBirthday = new Date(birthday).getFullYear();//生年月日の年
-    const monthOfBirthday = new Date(birthday).getMonth();//生年月日の年
-    const dayOfBirthday = new Date(birthday).getDate();//生年月日の年
-    const yearOfDateVisa = new Date(visa_date).getFullYear();
+    // const date = new Date();
+    // const day = date.getDate();//日
+    // const month = date.getMonth() + 1;// Tháng hiện tại, chú ý đến việc phải cộng thêm 1 vì tháng được tính từ 0-11
+    // const year = date.getFullYear();//現在の年
+    // const yearOfBirthday = new Date(birthday).getFullYear();//生年月日の年
+    // const monthOfBirthday = new Date(birthday).getMonth();//生年月日の年
+    // const dayOfBirthday = new Date(birthday).getDate();//生年月日の年
+    // const yearOfDateVisa = new Date(visa_date).getFullYear();
+    const today = new Date();
+    const selectedBirthday = new Date(birthday);
+    const selectedVisa = new Date(visa_date);
 
 
     const handleSubmit = async (e) => {
         console.log('username :' + userAcc)
         e.preventDefault();
         setDengen(true)
-        if (yearOfBirthday > year) {
-            setBirthdayError('有効な年を入力してください')
-        } if (monthOfBirthday > month) {
-            setBirthdayError('有効な年を入力してください')
-        } if (dayOfBirthday > day) {
-            setBirthdayError('有効な年を入力してください')
-        } else {
-            setBirthdayError(null);
+        if (!name || !/[A-Z\u4E00-\u9FFF\u3005\u3007\u303B]+$/.test(name)) {
+            setDengen(true);
+            return;
         }
 
-        if (yearOfDateVisa > (year + 10)) {
-            setVisa_dateError('有効な年を入力してください')
+        if (!sex) {
+            setDengen(true);
+             return;
         }
 
+        if (!birthday || selectedBirthday > today) {
+            setDengen(true);
+             return;
+        }
 
+        if (
+            !visa_id 
+        ) {
+            setDengen(true);
+             return;
+        }
+        
+
+        if (!address) {
+            setDengen(true);
+             return;
+        }
+
+        if (!visa_date || selectedVisa < today) {
+            setDengen(true);
+             return;
+        }
+
+        if (!visa_type) {
+            setDengen(true);
+             return;
+        }
+
+        if (!country) {
+            setDengen(true);
+             return;
+        }
+       
 
         axios.post("http://localhost:8080/update/" + userAcc,
             {
@@ -112,14 +143,16 @@ const UserUpdate = () => {
                 <h1 className="text-center text-primary py-3 ">データ変更</h1>
                 <div className="form-group pt-1 pb-2 px-5 ">
                     <label className='pb-1' for="name">氏名:</label>
-                    <input type="text" className="form-control" id="name" name="name" placeholder="例：AMRIT KUTTA"
+                    <input type="text" className="form-control" inputmode="katakana" id="name" name="name" placeholder="例：AMRIT KUTTA"
                         onChange={(e) => setName(e.target.value)}
                         value={name}
                     />
                 </div>
-                {dengen && (!/^[A-Za-z0-9]+$/.test(name) ||!name || name.length > 12) && (<h6 className="text-center text-danger"> 氏名は2字以上入力してください </h6>)}
-
-
+                {dengen && (!name) && (<h6 className="text-center text-danger"> 氏名を入力してください </h6>)}
+                {dengen && (!/[A-Z\u4E00-\u9FFF\u3005\u3007\u303B]+$/.test(name) && name.length >= 1 && !/[0-9]+$/.test(name)) && (<h6 className="text-center text-danger">
+                    氏名は大文字英語(半角スペース必須）と<br></br>
+                    2文字以上入力してください。 </h6>)}
+                {dengen && (/[0-9]+$/.test(name)) && (<h6 className="text-center text-danger"> 数字入力してはいけない </h6>)}
                 <div className="form-check row pb-2">
                     <p className=" R-p ml-3 mb-2 d-inline">性別：</p>
                     <div className="form-check col-4 d-inline ">
@@ -145,22 +178,24 @@ const UserUpdate = () => {
                     />
                 </div>
                 {dengen && !birthday && (<h6 className="text-center text-danger">生年月日を選択してください</h6>)}
-                {dengen && (<h6 className="text-center text-danger">{birthdayError}</h6>)}
+                {dengen && ( selectedBirthday > today) && (<h6 className="text-center text-danger">正しい生年月日が入力されました。</h6>)}
 
                 <div className="form-group pt-1 pb-2 px-5">
                     <label className='pb-1' for="visa_id">在留カード番号：</label>
-                    <input type="text" className="form-control" id="visa_id" name="visa_id" placeholder="例：FE123456790"
-                        onChange={(e) => setVisa_id(e.target.value)} value={visa_id} maxLength='12' />
+                    <input type="text" className=" form-control" id="visa_id" name="visa_id" placeholder="例：FE123456790"
+                        onChange={(e) => setVisa_id(e.target.value)} value={visa_id.toUpperCase()} maxLength='12' />
                 </div>
-                {dengen && (!/^[A-Z0-9]+$/.test(visa_id) ||!visa_id || visa_id.length < 12) && (<h6 className="text-center text-danger">  在留カード番号を12文字を入力してください </h6>)}
+                {dengen  && !visa_id && (<h6 className="text-center text-danger">  在留カード番号を入力してください </h6>)}
+                {dengen && (visa_id.length >=1 && (!/^(?=[A-Za-z]{2}\d{10}$)(?![A-Za-z]+$)(?!\d+$)[A-Za-z\d]{1,12}$/.test(visa_id))  )  && (<h6 className="text-center text-danger"> 正しい在留カード番号を入力してください<br></br> 例：FE1234567890 </h6>)}
+                
 
                 <div className="form-group pt-1 pb-2 px-5">
                     <label className='pb-1' for="visa_date">ビザ期限：</label>
                     <input type="date" className="form-control" id="visa_date" name="visa_date" placeholder="ビザ期限"
-                        onChange={(e) => setVisa_date(e.target.value)} value={visa_date} max={`${year + 10}-${month}-${day}`} />
+                        onChange={(e) => setVisa_date(e.target.value)} value={visa_date}  />
                 </div>
                 {dengen && !visa_date && (<h6 className="text-center text-danger">ビザ期限を選択してください</h6>)}
-                {dengen && (<h6 className="text-center text-danger">{visa_dateError}</h6>)}
+                {dengen && selectedVisa < today && (<h6 className="text-center text-danger">このビザは期限切れです。<br></br>正しいビザ期限を選択してください</h6>)}
 
                 <div >
                     <label className="my-2 ms-5" >ビザ資格：</label>
@@ -199,6 +234,7 @@ const UserUpdate = () => {
                         onChange={(e) => setAddress(e.target.value)} value={address} />
                 </div>
                 {dengen && !address && (<h6 className="text-center text-danger">住所を入力してください</h6>)}
+                {dengen && !/[0-9\u4E00-\u9FFF\u3005\u3007\u303B]+$/.test(address) &&address.length>=1 && (<h6 className="text-center text-danger">住所は漢字で入力してください。</h6>)}
 
                 <div className="row d-flex justify-content-around mt-3">
                     <button

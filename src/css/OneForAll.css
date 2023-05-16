@@ -47,6 +47,9 @@
     border: none !important;
     font-weight: 500 !important;
 }
+.uppercase-input {
+    text-transform: uppercase;
+  }
 /* これはホームページのCSS */
 /* Home.js */
 /* クラス名　始めるのは "Home" */

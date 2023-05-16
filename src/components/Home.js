@@ -12,8 +12,12 @@ const HOME = (props) => {
   //message の状態useStateに設定する
   const [message, setMessage] = useState(null);
   useEffect(() => {
+    //
     if (location.state && location.state.message) {
       setMessage(location.state.message);
+    }
+    if (location.state && location.state.messageRegisterSuccess){
+      setMessage(location.state.messageRegisterSuccess)
     }
   }, [location]);
 
@@ -72,7 +76,7 @@ const HOME = (props) => {
     <div
       onClick={handlePageClick}
       className=" Home-main container-flued ">
-      {message && <h3 className="Home-alert alert alert-success text-center ">{message}</h3>}
+      {message && (<h3 className="Home-alert alert alert-success text-center ">{message}</h3>)}
       {loginFailed && (
         <h3 className="Home-alert alert alert-danger text-center ">
           アカウント存在しません。。

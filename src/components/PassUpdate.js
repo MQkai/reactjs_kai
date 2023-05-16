@@ -46,7 +46,8 @@ const PassUpdate = () => {
                 }
             }
         )
-            .then(res => {            
+            .then(res => {    
+                console.log(res)        
                 if(res.data === "Password updated successfully"){
                     passChangeSuccess('/', { state: { message: 'パスワード変更できました！' } });
                 }
