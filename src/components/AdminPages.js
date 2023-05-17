@@ -25,7 +25,7 @@ const AdminPages = () => {
   // tao bien ao voi tai khoan dang dang nhap la admin
   // let username = "admin";
   const username = 'admin'
-//ユーザのデータ一覧取得します
+  //ユーザのデータ一覧取得します
   useEffect(() => {
     axios
       .post(
@@ -115,6 +115,8 @@ const AdminPages = () => {
           console.log(res.data[0])
           sessionStorage.setItem('userAcc1', str)
           const data = {
+            first_name:res.data[0].first_name,
+            last_name:res.data[0].last_name,
             name: res.data[0].name,
             sex: res.data[0].sex,
             birthday: res.data[0].birthday,
@@ -123,7 +125,6 @@ const AdminPages = () => {
             visa_type: res.data[0].visa_type,
             country: res.data[0].country,
             address: res.data[0].address
-
           };
           // object => string JSON に変更します
           const myJSON = JSON.stringify(data);
@@ -152,11 +153,29 @@ const AdminPages = () => {
   const handleDeleteFilter = () => {
     setNoteFilter("DELETE");
   };
+
+
+  //残り日分ける
+  const handleInfor = () => {
+    
+    setNoteFilter('ビザの有効期限が切れました')
+  };
+
+  const handleWarn = () => {
+    setNoteFilter('警告 ')
+  };
+  const handleDanger = () => {
+    setNoteFilter('危険')
+  };
+
+
+
+  //click page
   const handleClick = () => {
+    
     setErrorMess(false)
     setMessage(null);
   }
-
   //遷移
   const goToAdminUpdate = useNavigate();
   const goToHome = useNavigate();
@@ -187,22 +206,22 @@ const AdminPages = () => {
               <th scope="col">年齢</th>
               <th scope="col">在留カード番号</th>
               <th scope="col">ビザ期限</th>
-              <th scope="col">残り日</th>
+              <th className="text-center" scope="col">残り日</th>
               <th scope="col">ビザ資格</th>
               <th scope="col">国籍</th>
               <th scope="col">住所</th>
-              <th scope="col">
-              <Dropdown className="dropdown">
-                <Dropdown.Toggle  className="dropdown">
-                スターテス
-                </Dropdown.Toggle>
+              <th className="text-center" scope="col">
+                <Dropdown className="dropdown">
+                  <Dropdown.Toggle className="dropdown text-center ps-2">
+                    スターテス
+                  </Dropdown.Toggle>
 
-                <Dropdown.Menu>
-                  <Dropdown.Item onClick={handleAllFilter}>All</Dropdown.Item>
-                  <Dropdown.Item onClick={handleActiveFilter}>ACTIVE</Dropdown.Item>
-                  <Dropdown.Item onClick={handleDeleteFilter}>DELETE</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+                  <Dropdown.Menu>
+                    <Dropdown.Item onClick={handleAllFilter}>すべてのアカウント</Dropdown.Item>
+                    <Dropdown.Item onClick={handleActiveFilter}>有効なアカウント</Dropdown.Item>
+                    <Dropdown.Item onClick={handleDeleteFilter}>削除されたアカウント</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </th>
 
               <th scope="col">修理</th>
@@ -210,6 +229,17 @@ const AdminPages = () => {
           </thead>
           <tbody>
             {userData
+              // .filter((user) => {
+              //   if (noteFilter === "情報") {
+              //     return remDay(user.visa_date) === `${25}日`;
+              //   } else if (noteFilter === "警告") {
+              //     return remDay(user.visa_date) < 10;
+              //   } else if (noteFilter === "危険") {  
+              //     return remDay(user.visa_date) === "ビザの有効期限が切れました";
+              //   }
+              //   return true;
+              // })
+              .filter((user) => remDay(user.visa_date))
               .filter((user) =>
                 user.status.includes(noteFilter)
               )

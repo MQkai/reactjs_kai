@@ -41,7 +41,7 @@ const MyPages = () => {
   }, [0])
 
   
- //username はpassupdate.jsに転送する。
+ //username はuserUpdate.jsに転送する。
  const handleClick = () =>{
     axios.get("http://localhost:8080/update/" + username,{
     headers: {
@@ -52,6 +52,22 @@ const MyPages = () => {
     console.log(res.data)
     console.log(username)
     sessionStorage.setItem('userAcc',username)
+    const data = {
+      first_name:res.data[0].first_name,
+      last_name:res.data[0].last_name,
+      name: res.data[0].name,
+      sex: res.data[0].sex,
+      birthday: res.data[0].birthday,
+      visa_id: res.data[0].visa_id,
+      visa_date: res.data[0].visa_date,
+      visa_type: res.data[0].visa_type,
+      country: res.data[0].country,
+      address: res.data[0].address
+    };
+    // object => string JSON に変更します
+    const myJSON = JSON.stringify(data);
+    //　string JSON　は 　sessionStorageに保存する
+    sessionStorage.setItem('data', myJSON);
     goToUserUpdate('/UserUpdate')
   })
   .catch(error => {

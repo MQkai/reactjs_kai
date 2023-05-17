@@ -1,10 +1,7 @@
-POST  http://localhost:8080/forgetPassword HTTP/1.1
+get  http://localhost:8080/update/userkai123 HTTP/1.1
 Content-Type: application/json
 
 {
-    "username": "user",
-    "visa_id": "af123456789",
-    "birthday": "2023-05-11",
-    "newpassword":"12345678",
-    "confirmnewpass":"12345678" 
+    "username": "userkai123"
+    
 }
