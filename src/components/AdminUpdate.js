@@ -41,11 +41,11 @@ const AdminUpdate = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setDengen(true)
-        if (!firstName || !/[A-Z\u4E00-\u9FFF\u3005\u3007\u303B]+$/.test(name)) {
+        if (!firstName || !/^(?=.*[A-Z\u4E00-\u9FFF])[^0-9\s]+$/.test(firstName) && firstName.length >= 1  ) {
             setDengen(true);
             return;
         }
-        if (!lastName || !/[A-Z\u4E00-\u9FFF\u3005\u3007\u303B]+$/.test(name)) {
+        if (!lastName || (!/^(?=.*[A-Z\u4E00-\u9FFF])[^0-9\s]+$/.test(lastName) && lastName.length >= 1)) {
             setDengen(true);
             return;
         }
@@ -58,12 +58,12 @@ const AdminUpdate = () => {
             return;
         }
         if (
-            !visa_id
+            !visa_id ||(visa_id.length >= 1 && (!/^(?=[A-Za-z]{2}\d{8}[A-Za-z]{2}$)(?![A-Za-z]+$)(?!\d+$)(?![A-Za-z]+$)[A-Za-z\d]{1,12}$/.test(visa_id)))
         ) {
             setDengen(true);
             return;
         }
-        if (!address) {
+        if (!address || (!/[0-9\u4E00-\u9FFF\u3005\u3007\u303B]+$/.test(address) && address.length >= 1)) {
             setDengen(true);
             return;
         }
@@ -82,7 +82,7 @@ const AdminUpdate = () => {
         axios.post("http://localhost:8080/update/" + userAcc1,
             {
                 username: userAcc1,
-                name: firstName + ' ' + lastName,
+                name: firstName.toUpperCase() + ' ' + lastName.toUpperCase(),
                 sex: sex,
                 birthday: birthday,
                 visa_id: visa_id,
@@ -113,7 +113,7 @@ const AdminUpdate = () => {
 
 
     const test = () => {
-        
+       
     }
 
 

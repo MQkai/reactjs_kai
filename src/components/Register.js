@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -14,8 +14,8 @@ const Register = () => {
   const [post, setPost] = useState({
     username: "",
     password: "",
-    firstName: '',
-    lastName: '',
+    // first_name: '',
+    // last_name: '',
     name:'',  
     sex: "",
     birthday: "",
@@ -24,20 +24,20 @@ const Register = () => {
     visa_type: "",
     country: "",
     address: "",
-    status: "",
+    status: ""
   });
+  const[firstName,setFirstName]=useState('')
+  const[lastName,setLastName]=useState('')
+  useEffect(() => {
+    // const { first_name, last_name } = post;
+    const name = firstName + ' ' + lastName;
+    setPost((prevPost) => ({ ...prevPost, name }));
+  }, [firstName, lastName]);
+  
   const handleInput = (e) => {
     const { name, value } = e.target;
-    if (name === 'firstName' || name === 'lastName') {
-      setPost({
-        ...post,
-        [name]: value,
-        name: `${post.firstName}  ${post.lastName}`,
-      });
-    } else {
-      setPost({ ...post, [name]: value });
-    }
-  };
+    setPost({ ...post, [name]: value });
+}
   const today = new Date();
   const selectedBirthday = new Date(post.birthday);
   const selectedVisa = new Date(post.visa_date);
@@ -49,11 +49,7 @@ const Register = () => {
     //check
 
     if (
-      !post.username ||
-      !/^(?=.*\d)(?=.*[A-Za-z])[A-Za-z][A-Za-z\d]{5,19}$/.test(post.username) ||
-      /\W/.test(post.username) ||
-      post.username.length < 6 ||
-      post.username.length > 20
+      !post.username 
     ) {
       setInputFailed(true);
       return;
@@ -61,29 +57,14 @@ const Register = () => {
 
 
     if (
-      !post.password ||
-      !/^(?=.*\d)(?=.*[A-Za-z])[A-Za-z\d]{5,19}$/.test(post.password) ||
-      /\W/.test(post.password) ||
-      post.password.length < 6 ||
-      post.password.length > 20
+      !post.password 
     ) {
       setInputFailed(true);
       return;
     }
 
 
-    if (
-      !post.firstName
-    ) {
-      setInputFailed(true);
-      return;
-    }
-    if (
-      !post.lastName
-    ) {
-      setInputFailed(true);
-      return;
-    }
+   
 
     if (!post.sex) {
       setInputFailed(true);
@@ -97,14 +78,13 @@ const Register = () => {
 
 
     if (
-      !post.visa_ID ||
-      !/^(?=.*[A-Z])(?=.*\d)[A-Z\d]{12}$/.test(post.visa_ID)
+      !post.visa_ID 
     ) {
       setInputFailed(true);
       return;
     }
 
-    if (!post.address || !/^[\u3040-\u309F\u30A0-\u30FFー0-9]+$/u.test(post.address)) {
+    if (!post.address) {
       setInputFailed(true);
       return;
     }
@@ -123,12 +103,7 @@ const Register = () => {
       setInputFailed(true);
       return;
     }
-    if (!post.status) {
-      setInputFailed(true);
-      return;
-    }
-
-
+    
     // server call
     axios
       .post("http://localhost:8080/register", post, {
@@ -137,6 +112,7 @@ const Register = () => {
         },
       })
       .then((res) => {
+        console.log('aaaaa' +res)
         if (res.data.information === "存在しました") {
 
           setErrormes(true);
@@ -230,47 +206,47 @@ const Register = () => {
             <input
               type="text"
               className="form-control"
-              name="firstName"
+              name="first_name"
               placeholder="例：AMRIT"
-              value={post.firstName.toUpperCase()}
-              onChange={handleInput}
+              value={firstName.toUpperCase()}
+              onChange={(event)=>setFirstName(event.target.value)}
             />
             {inputFailed && (
-              !post.firstName
+              !firstName
 
             ) && (
                 <h6 className="pt-1 text-center text-danger ">
                   姓は入力してください
                 </h6>
               )}
-            {inputFailed && (!/^(?=.*[A-Z\u4E00-\u9FFF])[^0-9\s]+$/.test(post.firstName) && post.firstName.length >= 1 && !/[0-9]+$/.test(post.firstName)) && (<h6 className="text-center text-danger">
+            {inputFailed && (!/^(?=.*[A-Z\u4E00-\u9FFF])[^0-9\s]+$/.test(firstName) && firstName.length >= 1 && !/[0-9]+$/.test(firstName)) && (<h6 className="text-center text-danger">
               氏名は大文字英語(半角スペース必須）と<br></br>
               2文字以上入力してください。 </h6>)}
-            {inputFailed && (/[0-9]+$/.test(post.firstName)) && (<h6 className="text-center text-danger"> 数字入力してはいけない </h6>)}
+            {inputFailed && (/[0-9]+$/.test(firstName)) && (<h6 className="text-center text-danger"> 数字入力してはいけない </h6>)}
             </div>
             <div className="ps-2">
             <label className="pb-1">名:</label>
             <input
               type="text"
               className="form-control"
-              name="lastName"
+              name="last_name"
               placeholder="例：KUTTA"
-              value={post.lastName.toUpperCase()}
-              onChange={handleInput}
+              value={lastName.toUpperCase()}
+              onChange={(event)=>setLastName(event.target.value)}
             />
 
             {inputFailed && (
-              !post.lastName
+              !lastName
 
             ) && (
                 <h6 className="pt-1 text-center text-danger ">
                   名は入力してください
                 </h6>
               )}
-            {inputFailed && (!/^(?=.*[A-Z\u4E00-\u9FFF])[^0-9\s]+$/.test(post.lastName) && post.lastName.length >= 1 && !/[0-9]+$/.test(post.lastName)) && (<h6 className="text-center text-danger">
+            {inputFailed && (!/^(?=.*[A-Z\u4E00-\u9FFF])[^0-9\s]+$/.test(lastName) && lastName.length >= 1 && !/[0-9]+$/.test(lastName)) && (<h6 className="text-center text-danger">
               氏名は大文字英語(半角スペース必須）と<br></br>
               2文字以上入力してください。 </h6>)}
-            {inputFailed && (/[0-9]+$/.test(post.lastName)) && (<h6 className="text-center text-danger"> 数字入力してはいけない </h6>)}
+            {inputFailed && (/[0-9]+$/.test(lastName)) && (<h6 className="text-center text-danger"> 数字入力してはいけない </h6>)}
             </div>
           </div>
 

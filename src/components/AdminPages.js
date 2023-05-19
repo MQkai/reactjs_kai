@@ -156,9 +156,17 @@ const AdminPages = () => {
 
 
   //残り日分ける
+  const test =(str) =>{
+    const currentDate = new Date();
+    const visa_date = new Date(str);
+    const timeDifference = visa_date.getTime() - currentDate.getTime();
+    const day = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+    return day;
+  }
   const handleInfor = () => {
-    
-    setNoteFilter('ビザの有効期限が切れました')
+    if(test <= 0){
+      setNoteFilter('ビザの有効期限が切れました')
+    }
   };
 
   const handleWarn = () => {
@@ -206,7 +214,19 @@ const AdminPages = () => {
               <th scope="col">年齢</th>
               <th scope="col">在留カード番号</th>
               <th scope="col">ビザ期限</th>
-              <th className="text-center" scope="col">残り日</th>
+              <th className="text-center" scope="col">
+                <Dropdown className="dropdown">
+                  <Dropdown.Toggle className="dropdown ps-5">
+                    残り日
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu >
+                    <Dropdown.Item onClick={handleInfor} >情報</Dropdown.Item>
+                    <Dropdown.Item onClick={handleWarn}>警告</Dropdown.Item>
+                    <Dropdown.Item onClick={handleDanger}>危険</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </th>
               <th scope="col">ビザ資格</th>
               <th scope="col">国籍</th>
               <th scope="col">住所</th>
@@ -239,7 +259,12 @@ const AdminPages = () => {
               //   }
               //   return true;
               // })
-              .filter((user) => remDay(user.visa_date))
+              // n
+              // .filter((user) => {
+              //   noteFilter === 'ビザの有効期限が切れました' 
+              //     return test.
+              
+              // })
               .filter((user) =>
                 user.status.includes(noteFilter)
               )

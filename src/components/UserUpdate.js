@@ -44,7 +44,13 @@ const UserUpdate = () => {
     const [firstName, setFirstName] = useState(data.first_name);
     const [lastName, setLastName] = useState(data.last_name);
     const [name, setName] = useState(data.name);
-
+    useEffect(() => {
+        if (data.sex === '男') {
+            setSex('男');
+        } else if (data.sex === '女') {
+            setSex('女');
+        }
+    }, [data.sex]);
     //生年月日とビザ期限の条件を設定する。
     const [birthdayError, setBirthdayError] = useState(null);
     const [visa_dateError, setVisa_dateError] = useState(null);
@@ -62,58 +68,49 @@ const UserUpdate = () => {
         console.log('username :' + userAcc)
         e.preventDefault();
         setDengen(true)
-        if (!firstName) {
+        if (!firstName || !/^(?=.*[A-Z\u4E00-\u9FFF])[^0-9\s]+$/.test(firstName) && firstName.length >= 1  ) {
             setDengen(true);
             return;
         }
-        if (!lastName) {
+        if (!lastName || (!/^(?=.*[A-Z\u4E00-\u9FFF])[^0-9\s]+$/.test(lastName) && lastName.length >= 1)) {
             setDengen(true);
             return;
         }
-
         if (!sex) {
             setDengen(true);
             return;
         }
-
         if (!birthday || selectedBirthday > today) {
             setDengen(true);
             return;
         }
-
         if (
-            !visa_id
+            !visa_id ||(visa_id.length >= 1 && (!/^(?=[A-Za-z]{2}\d{8}[A-Za-z]{2}$)(?![A-Za-z]+$)(?!\d+$)(?![A-Za-z]+$)[A-Za-z\d]{1,12}$/.test(visa_id)))
         ) {
             setDengen(true);
             return;
         }
-
-
-        if (!address) {
+        if (!address || (!/[0-9\u4E00-\u9FFF\u3005\u3007\u303B]+$/.test(address) && address.length >= 1)) {
             setDengen(true);
             return;
         }
-
         if (!visa_date || selectedVisa < today) {
             setDengen(true);
             return;
         }
-
         if (!visa_type) {
             setDengen(true);
             return;
         }
-
         if (!country) {
             setDengen(true);
             return;
         }
 
-
         axios.post("http://localhost:8080/update/" + userAcc,
             {
                 username: userAcc,
-                name: firstName + ' ' + lastName,
+                name: firstName.toUpperCase() + ' ' + lastName.toUpperCase(),
                 sex: sex,
                 birthday: birthday,
                 visa_id: visa_id,
@@ -133,7 +130,7 @@ const UserUpdate = () => {
                         if (res.data !== undefined) {
                             setUserData(res.data[0])
                             console.log(res.data)
-                            backToMyPages('/MyPages')
+                            backToMyPages('/MyPages',{state:{message: 'データ変更できました'}})
                         }
                     })
             })
@@ -172,7 +169,7 @@ const UserUpdate = () => {
                             value={lastName.toUpperCase()}
                         />
                         {dengen && (!lastName) && (<h6 className="pt-1 text-center text-danger "> 名を入力してください </h6>)}
-                        {dengen && (!!/^(?=.*[A-Z\u4E00-\u9FFF])[^0-9\s]+$/.test(lastName) && lastName.length >= 1 && !/[0-9]+$/.test(lastName)) && (<h6 className="pt-1 text-center text-danger">
+                        {dengen && (!/^(?=.*[A-Z\u4E00-\u9FFF])[^0-9\s]+$/.test(lastName) && lastName.length >= 1 && !/[0-9]+$/.test(lastName)) && (<h6 className="pt-1 text-center text-danger">
                             氏名は英語(半角スペース必須）と<br></br>
                             2文字以上入力してください。 </h6>)}
                         {dengen && (/[0-9]+$/.test(lastName)) && (<h6 className="pt-1 text-center text-danger"> 数字入力してはいけない </h6>)}
@@ -183,11 +180,11 @@ const UserUpdate = () => {
                 <div className="form-check row pb-2">
                     <p className=" R-p ml-3 mb-2 d-inline">性別：</p>
                     <div className="form-check col-4 d-inline ">
-                        <input className="mr-4 mt-2" type="radio" name="sex" onChange={(e) => setSex(e.target.value)} value="男" />
+                        <input className="mr-4 mt-2" type="radio" name="sex" onChange={(e) => setSex(e.target.value)} value="男" checked={sex === "男"} />
                         <label className="pb-1 ms-3 " >男</label>
                     </div>
                     <div className="form-check col-4 d-inline">
-                        <input className="mr-4 mt-2" type="radio" name="sex" onChange={(e) => setSex(e.target.value)} value="女" />
+                        <input className="mr-4 mt-2" type="radio" name="sex" onChange={(e) => setSex(e.target.value)} value="女" checked={sex === "女"} />
                         <label className="pb-1 ms-3 " >女</label>
                     </div>
                     <div className="form-check col-4 d-inline">
